@@ -9,8 +9,16 @@
   <body>
     <div class="pin" id="13">
       <h4>Digital (13)</h4>
-      <p><button class="digitalToggleButton">Toggle</button></p>
+      <p><button class="digitalModeToggleButton">Mode</button></p>
       <p><button class="digitalQueryButton">Query</button></p>
+      <p><button class="digitalValueToggleButton">Toggle</button></p>
+    </div>
+
+    <div class="pin" id="12">
+      <h4>Digital (12)</h4>
+      <p><button class="digitalModeToggleButton">Mode</button></p>
+      <p><button class="digitalQueryButton">Query</button></p>
+      <p><button class="digitalValueToggleButton">Toggle</button></p>
     </div>
 
     <!--
@@ -34,11 +42,11 @@
         return Number(el.attr('id'));
       }
 
-      $('.digitalToggleButton').on('click', function() {
-        socket.emit('toggleDigital', findPinNum($(this)));
+      $('.digitalModeToggleButton').on('click', function() {
+        socket.emit('toggleDigitalMode', findPinNum($(this)));
       });
 
-      socket.on('toggledDigital', function(data) {
+      socket.on('toggledDigitalMode', function(data) {
         console.log(data);
       });
 
@@ -47,6 +55,14 @@
       });
 
       socket.on('queriedDigital', function(data) {
+        console.log(data);
+      });
+
+      $('.digitalValueToggleButton').on('click', function() {
+        socket.emit('toggleDigitalValue', findPinNum($(this)));
+      });
+
+      socket.on('toggledDigitalValue', function(data) {
         console.log(data);
       });
 
