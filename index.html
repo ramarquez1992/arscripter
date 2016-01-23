@@ -7,9 +7,10 @@
     <title>web-arduino</title>
   </head>
   <body>
-    <div>
+    <div class="pin" id="13">
       <h4>Digital (13)</h4>
-      <p><button id="13" class="digitalToggle">Toggle</button></p>
+      <p><button class="digitalToggleButton">Toggle</button></p>
+      <p><button class="digitalQueryButton">Query</button></p>
     </div>
 
     <!--
@@ -25,15 +26,29 @@
     <script>
       var socket = io.connect('http://localhost:8080');
 
-      $('.digitalToggle').on('click',function(){
-        //socket.emit('toggleDigital',{ pin: this.id });
-        socket.emit('toggleDigital', this.id);
+      function findPinNum(el) {
+        while (el.attr('class') !== 'pin') {
+          el = el.parent();
+        }
+
+        return Number(el.attr('id'));
+      }
+
+      $('.digitalToggleButton').on('click', function() {
+        socket.emit('toggleDigital', findPinNum($(this)));
       });
 
       socket.on('toggledDigital', function(data) {
         console.log(data);
       });
 
+      $('.digitalQueryButton').on('click', function() {
+        socket.emit('queryDigital', findPinNum($(this)));
+      });
+
+      socket.on('queriedDigital', function(data) {
+        console.log(data);
+      });
 
       /*
       socket.on('light', function (data) {

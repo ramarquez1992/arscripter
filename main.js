@@ -40,6 +40,13 @@ io.sockets.on('connection', function (socket) {
       });
     });
 
+    socket.on('queryDigital', function(pin) {
+      console.log('Querying pin ' + pin);
+
+      digitalPins[pin].query(function(state) {
+        socket.emit('queriedDigital', { pin: pin, state: state.value });
+      });
+    });
 
     /*
     // read in light data, pass to browser
@@ -48,8 +55,6 @@ io.sockets.on('connection', function (socket) {
     });
     */
 
-  } else {
-    socket.emit('error', 'Board not ready yet');
   }
 
 });
