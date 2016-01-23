@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>web-arduino</title>
+  </head>
+  <body>
+    <div>
+      <h4>Digital (13)</h4>
+      <p><button id="13" class="digitalToggle">Toggle</button></p>
+    </div>
+
+    <!--
+    <div>
+      <h4>Analog (A0)</h4>
+      <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
+    </div>
+    -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect('http://localhost:8080');
+
+      $('.digitalToggle').on('click',function(){
+        //socket.emit('toggleDigital',{ pin: this.id });
+        socket.emit('toggleDigital', this.id);
+      });
+
+      socket.on('toggledDigital', function(data) {
+        console.log(data);
+      });
+
+
+      /*
+      socket.on('light', function (data) {
+        console.log("Incoming light data:",data.raw);
+        $("#lightData").append(data.raw+"\r");
+        $("#lightData").animate({scrollTop:$("#lightData")[0].scrollHeight - $("#lightData").height()},200);
+
+      });
+      */
+
+    </script>
+    </body>
+</html>
