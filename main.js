@@ -39,83 +39,76 @@ board.on('ready', function() {
 io.sockets.on('connection', function (socket) {
   if (board.isReady){
 
-    socket.on('queryMode', function(pin) {
-      socket.emit('queriedMode', { pin: pin, mode: pins[pin].mode });
-    });
-
-    // DIGITAL PINS
-    function setDigitalPinToInput(n) {
-      pins[n] = new five.Pin({
-        pin: n,
-        type: 'digital',
-        mode: 0
-      });
-
-      pins[n].on('high', function() {
-        socket.emit('queriedDigital', { pin: n, value: 1 });
-      });
-
-      pins[n].on('low', function() {
-        socket.emit('queriedDigital', { pin: n, value: 0 });
+    function sendState(pin) {
+      pins[pin].query(function(state) {
+        socket.emit('queriedState', { pin: pin, mode: pins[pin].mode, value: state.value });
       });
     }
 
-    function setDigitalPinToOutput(n) {
-      pins[n] = new five.Pin(n);
-      pins[n].low();
+    socket.on('queryState', function(pin) {
+      sendState(pin);
+    });
+
+    for (var i = 0; i < digitalPinCount; i++) {
+      pins[i].on('high', function() {
+        sendState(this.pin);
+      });
+
+      pins[i].on('low', function() {
+        sendState(this.pin);
+      });
+    }
+
+    // DIGITAL PINS
+    function setDigitalPinToInput(pin) {
+      pins[pin].mode = five.Pin.INPUT;
+    }
+
+    function setDigitalPinToOutput(pin) {
+      pins[pin].mode = five.Pin.OUTPUT;
     }
 
     socket.on('toggleDigitalMode', function(pin) {
-      pins[pin].query(function(state) {
-        var newMode;
+      pins[pin].mode = (pins[pin].mode === five.Pin.INPUT ? five.Pin.OUTPUT : five.Pin.INPUT);
+      //pins[pin].mode === five.Pin.INPUT ? setDigitalPinToOutput(pin) : setDigitalPinToInput(pin);
 
-        if (state.mode === 0) {
-          setDigitalPinToOutput(pin);
-          newMode = 1
-        } else {
-          setDigitalPinToInput(pin);
-          newMode = 0;
-        }
-
-        socket.emit('toggledDigitalMode', { pin: pin, mode: newMode });
-      });
-    });
-
-    socket.on('queryDigital', function(pin) {
-      pins[pin].query(function(state) {
-        socket.emit('queriedDigital', { pin: pin, value: state.value });
-      });
+      sendState(pin);
     });
 
     socket.on('toggleDigitalValue', function(pin) {
       pins[pin].query(function(state) {
         pins[pin][ state.value ? 'low' : 'high' ]();
-
-        socket.emit('toggledDigitalValue', { pin: pin, value: state.value });
       });
     });
 
+
+    // PWM PINS
+    socket.on('togglePWMMode', function(pin) {
+      pins[pin].mode = (pins[pin].mode === five.Pin.PWM ? five.Pin.OUTPUT : five.Pin.PWM);
+
+      sendState(pin);
+    });
+
+    socket.on('setPWMValue', function(data) {
+      board.analogWrite(data.pin, data.value);
+
+      sendState(data.pin);
+    });
 
 
     // ANALOG PINS
+    // TODO: automatically send analog data when changed
+    // TODO: remove analog set value to digital toggle
     socket.on('toggleAnalogMode', function(pin) {
       pins[pin].mode = (pins[pin].mode === five.Pin.ANALOG ? five.Pin.OUTPUT : five.Pin.ANALOG);
-      socket.emit('toggledAnalogMode', { pin: pin, mode: pins[pin].mode });
-    });
 
-
-    socket.on('queryAnalog', function(pin) {
-      pins[pin].query(function(state) {
-        socket.emit('queriedAnalog', { pin: pin, value: state.value });
-      });
+      sendState(pin);
     });
 
     socket.on('setAnalogValue', function(data) {
-      //pins[data.pin].mode = five.Pin.PWM;
-      //pins[data.pin].mode = five.Pin.ANALOG;
-      //board.analogWrite(data.pin, data.value);
-      //five.Pin.analogWrite(pins[data.pin], data.value);
       pins[data.pin].write(data.value);
+
+      sendState(data.pin);
     });
 
   }

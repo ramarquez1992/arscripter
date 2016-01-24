@@ -9,17 +9,27 @@
   <body>
     <div style="float:left;">
       <h2>Digital</h2>
+      <div class="pin" id="6" style="float:left;">
+        <h4>[06]</h4>
+        <p><button class="pwmModeToggleButton">PWM</button></p>
+        <p><input class="valueText" type="text"></p>
+        <p><button class="pwmValueSetButton">Set</button></p>
+        <p><button class="digitalModeToggleButton">Mode</button></p>
+        <p><button class="queryStateButton">Query</button></p>
+        <p><button class="digitalValueToggleButton">Toggle</button></p>
+      </div>
+
       <div class="pin" id="12" style="float:left;">
         <h4>[12]</h4>
         <p><button class="digitalModeToggleButton">Mode</button></p>
-        <p><button class="digitalQueryButton">Query</button></p>
+        <p><button class="queryStateButton">Query</button></p>
         <p><button class="digitalValueToggleButton">Toggle</button></p>
       </div>
 
       <div class="pin" id="13" style="float:left;">
         <h4>[13]</h4>
         <p><button class="digitalModeToggleButton">Mode</button></p>
-        <p><button class="digitalQueryButton">Query</button></p>
+        <p><button class="queryStateButton">Query</button></p>
         <p><button class="digitalValueToggleButton">Toggle</button></p>
       </div>
     </div>
@@ -29,17 +39,17 @@
       <div class="pin" id="14" style="float:left;">
         <h4>[A0]</h4>
         <p><button class="analogModeToggleButton">Mode</button></p>
-        <p><button class="analogQueryButton">Query</button></p>
-        <p><input class="analogValueText" type="text"></p>
+        <p><button class="queryStateButton">Query</button></p>
+        <p><input class="valueText" type="text"></p>
         <p><button class="analogValueSetButton">Set</button></p>
         <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
       </div>
 
-      <div class="pin" id="16" style="float:left;">
-        <h4>[A2]</h4>
+      <div class="pin" id="15" style="float:left;">
+        <h4>[A1]</h4>
         <p><button class="analogModeToggleButton">Mode</button></p>
-        <p><button class="analogQueryButton">Query</button></p>
-        <p><input class="analogValueText" type="text"></p>
+        <p><button class="queryStateButton">Query</button></p>
+        <p><input class="valueText" type="text"></p>
         <p><button class="analogValueSetButton">Set</button></p>
         <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
       </div>
@@ -64,10 +74,14 @@
           el = el.parent();
         }
 
-        return Number(el.find('.analogValueText').first().val());
+        return Number(el.find('.valueText').first().val());
       }
 
-      socket.on('queriedMode', function(data) {
+      $('.queryStateButton').on('click', function() {
+        socket.emit('queryState', findPinNum($(this)));
+      });
+
+      socket.on('queriedState', function(data) {
         console.log(data);
       });
 
@@ -77,24 +91,21 @@
         socket.emit('toggleDigitalMode', findPinNum($(this)));
       });
 
-      socket.on('toggledDigitalMode', function(data) {
-        console.log(data);
-      });
-
-      $('.digitalQueryButton').on('click', function() {
-        socket.emit('queryDigital', findPinNum($(this)));
-      });
-
-      socket.on('queriedDigital', function(data) {
-        console.log(data);
-      });
-
       $('.digitalValueToggleButton').on('click', function() {
         socket.emit('toggleDigitalValue', findPinNum($(this)));
       });
 
-      socket.on('toggledDigitalValue', function(data) {
-        console.log(data);
+
+      // PWM PINS
+      $('.pwmModeToggleButton').on('click', function() {
+        socket.emit('togglePWMMode', findPinNum($(this)));
+      });
+
+      $('.pwmValueSetButton').on('click', function() {
+        var pin = findPinNum($(this));
+        var value = findPinValue($(this));
+
+        socket.emit('setPWMValue', { pin: pin, value: value });
       });
 
 
@@ -103,29 +114,12 @@
         socket.emit('toggleAnalogMode', findPinNum($(this)));
       });
 
-      socket.on('toggledAnalogMode', function(data) {
-        console.log(data);
-      });
-
-      $('.analogQueryButton').on('click', function() {
-        socket.emit('queryAnalog', findPinNum($(this)));
-      });
-
-      socket.on('queriedAnalog', function(data) {
-        console.log(data);
-      });
-
       $('.analogValueSetButton').on('click', function() {
         var pin = findPinNum($(this));
         var value = findPinValue($(this));
 
         socket.emit('setAnalogValue', { pin: pin, value: value });
       });
-
-      socket.on('analogValueSet', function(data) {
-        console.log(data);
-      });
-
 
     </script>
     </body>
