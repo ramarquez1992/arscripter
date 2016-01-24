@@ -1,12 +1,10 @@
 var app = require('http').createServer(handler)
   , io = require('socket.io').listen(app)
   , fs = require('fs')
-  , temporal = require('temporal')
   , five = require('johnny-five');
 
+// INITIALIZE BOARD
 var board = new five.Board();
-var digitalPinCount = 14;
-var analogPinCount = 6;
 
 // Bluetooth connection
 /*var board = new five.Board({
@@ -15,7 +13,8 @@ var analogPinCount = 6;
 
 
 var pins = [];
-var analogPins = {};
+var digitalPinCount = 14;
+var analogPinCount = 6;
 
 function initDigitalPins(n) {
   for (var i = 0; i < n; i++) {
@@ -26,8 +25,8 @@ function initDigitalPins(n) {
 
 function initAnalogPins(n) {
   for (var i = 0; i < n; i++) {
-    pins.push(new five.Pin(i+digitalPinCount));
-    pins[i+digitalPinCount].mode = five.Pin.ANALOG;
+    pins.push(new five.Pin(i + digitalPinCount));
+    pins[i + digitalPinCount].mode = five.Pin.ANALOG;
   }
 }
 
@@ -36,9 +35,12 @@ board.on('ready', function() {
   initAnalogPins(analogPinCount);
 });
 
+
+// UI CONNECTION
 io.sockets.on('connection', function (socket) {
   if (board.isReady){
 
+    // QUERIES
     function sendState(pin) {
       pins[pin].query(function(state) {
         socket.emit('queriedState', { pin: pin, mode: pins[pin].mode, value: state.value });
@@ -113,15 +115,15 @@ io.sockets.on('connection', function (socket) {
 });
 
 
-
-// handle web server
+// WEB SERVER
+var indexFilename = 'index.html';
 app.listen(8080);
 function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
+  fs.readFile(__dirname + '/' + indexFilename,
   function (err, data) {
     if (err) {
       res.writeHead(500);
-      return res.end('Error loading index.html');
+      return res.end('Error loading ' + indexFilename);
     }
 
     res.writeHead(200);
