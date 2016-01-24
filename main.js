@@ -49,19 +49,6 @@ io.sockets.on('connection', function (socket) {
       sendState(pin);
     });
 
-    /*
-    for (var i = 0; i < digitalPinCount; i++) {
-      pins[i].on('high', function() {
-        console.log('went high');
-        sendState(this.pin);
-      });
-
-      pins[i].on('low', function() {
-        console.log('went low');
-        sendState(this.pin);
-      });
-    }
-    */
 
     // DIGITAL PINS
     function setDigitalPinToInput(pin) {
@@ -86,7 +73,6 @@ io.sockets.on('connection', function (socket) {
 
     socket.on('toggleDigitalMode', function(pin) {
       //pins[pin].mode = (pins[pin].mode === five.Pin.INPUT ? five.Pin.OUTPUT : five.Pin.INPUT);
-      //board.pinMode(pin, pins[pin].mode === five.Pin.INPUT ? five.Pin.OUTPUT : five.Pin.INPUT);
       pins[pin].mode === five.Pin.INPUT ? setDigitalPinToOutput(pin) : setDigitalPinToInput(pin);
 
       sendState(pin);
