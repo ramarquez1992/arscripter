@@ -49,28 +49,45 @@ io.sockets.on('connection', function (socket) {
       sendState(pin);
     });
 
+    /*
     for (var i = 0; i < digitalPinCount; i++) {
       pins[i].on('high', function() {
+        console.log('went high');
         sendState(this.pin);
       });
 
       pins[i].on('low', function() {
+        console.log('went low');
+        sendState(this.pin);
+      });
+    }
+    */
+
+    // DIGITAL PINS
+    function setDigitalPinToInput(pin) {
+      pins[pin] = new five.Pin({
+        pin: pin,
+        type: 'digital',
+        mode: 0
+      });
+
+      pins[pin].on('high', function() {
+        sendState(this.pin);
+      });
+
+      pins[pin].on('low', function() {
         sendState(this.pin);
       });
     }
 
-    // DIGITAL PINS
-    function setDigitalPinToInput(pin) {
-      pins[pin].mode = five.Pin.INPUT;
-    }
-
     function setDigitalPinToOutput(pin) {
-      pins[pin].mode = five.Pin.OUTPUT;
+      pins[pin] = new five.Pin(pin);
     }
 
     socket.on('toggleDigitalMode', function(pin) {
-      pins[pin].mode = (pins[pin].mode === five.Pin.INPUT ? five.Pin.OUTPUT : five.Pin.INPUT);
-      //pins[pin].mode === five.Pin.INPUT ? setDigitalPinToOutput(pin) : setDigitalPinToInput(pin);
+      //pins[pin].mode = (pins[pin].mode === five.Pin.INPUT ? five.Pin.OUTPUT : five.Pin.INPUT);
+      //board.pinMode(pin, pins[pin].mode === five.Pin.INPUT ? five.Pin.OUTPUT : five.Pin.INPUT);
+      pins[pin].mode === five.Pin.INPUT ? setDigitalPinToOutput(pin) : setDigitalPinToInput(pin);
 
       sendState(pin);
     });
