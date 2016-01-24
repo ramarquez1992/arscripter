@@ -42,7 +42,7 @@
         <p><button class="queryStateButton">Query</button></p>
         <p><button class="digitalValueToggleButton">Toggle</button></p>
         <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
-        <p><input type="text" class="analogPollValue"><button class="setAnalogPollButton">Poll (ms)</button></p>
+        <p><input type="text" class="pollValue"><button class="setPollButton">Poll (ms)</button><button class="stopPollButton">Stop</button></p>
       </div>
 
     </div>
@@ -75,25 +75,33 @@
           el = el.parent();
         }
 
-        return Number(el.find('.analogPollValue').first().val());
+        return Number(el.find('.pollValue').first().val());
       }
 
 
       // QUERY HANDLERS
       var pinPolls = {};
-      $('.setAnalogPollButton').on('click', function() {
+
+      function stopPoll(pin) {
+        if (pinPolls[pin] != null) window.clearInterval(pinPolls[pin]);
+      }
+
+      $('.stopPollButton').on('click', function() {
+        stopPoll(findPinNum($(this)));
+      });
+      
+      $('.setPollButton').on('click', function() {
         var pinNum = findPinNum($(this));
         var pollValue = findPollValue($(this));
 
         // Clear prior polls on pin
-        if (pinPolls[pinNum] != null) window.clearInterval(pinPolls[pinNum]);
+        stopPoll(pinNum);
 
         // Add new poll for pin
         pinPolls[pinNum] = window.setInterval(function() {
           socket.emit('queryState', pinNum);
         }, pollValue);
       });
-
 
       $('.queryStateButton').on('click', function() {
         socket.emit('queryState', findPinNum($(this)));
