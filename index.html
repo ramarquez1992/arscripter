@@ -9,7 +9,7 @@
   <body>
     <div style="float:left;">
       <h2>Digital</h2>
-      <div class="pin" id="6" style="float:left;">
+      <div class="pin digital pwm" id="6" style="float:left;">
         <h4>[06]</h4>
         <p><button class="pwmModeToggleButton">PWM</button></p>
         <p><input class="valueText" type="text"></p>
@@ -19,14 +19,14 @@
         <p><button class="digitalValueToggleButton">Toggle</button></p>
       </div>
 
-      <div class="pin" id="12" style="float:left;">
+      <div class="pin digital" id="12" style="float:left;">
         <h4>[12]</h4>
         <p><button class="digitalModeToggleButton">Mode</button></p>
         <p><button class="queryStateButton">Query</button></p>
         <p><button class="digitalValueToggleButton">Toggle</button></p>
       </div>
 
-      <div class="pin" id="13" style="float:left;">
+      <div class="pin digital" id="13" style="float:left;">
         <h4>[13]</h4>
         <p><button class="digitalModeToggleButton">Mode</button></p>
         <p><button class="queryStateButton">Query</button></p>
@@ -36,12 +36,13 @@
 
     <div style="float:left;">
       <h2>Analog</h2>
-      <div class="pin" id="14" style="float:left;">
+      <div class="pin analog" id="14" style="float:left;">
         <h4>[A0]</h4>
         <p><button class="analogModeToggleButton">Mode</button></p>
         <p><button class="queryStateButton">Query</button></p>
         <p><button class="digitalValueToggleButton">Toggle</button></p>
         <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
+        <p><input type="text" class="analogPollValue"><button class="setAnalogPollButton">Poll (ms)</button></p>
       </div>
 
     </div>
@@ -52,8 +53,9 @@
     <script>
       var socket = io.connect('http://localhost:8080');
 
+      // EXTRACT PIN INFO FROM ELEMENTS
       function findPinNum(el) {
-        while (el.attr('class') !== 'pin') {
+        while (!el.hasClass('pin')) {
           el = el.parent();
         }
 
@@ -61,12 +63,37 @@
       }
 
       function findPinValue(el) {
-        while (el.attr('class') !== 'pin') {
+        while (!el.hasClass('pin')) {
           el = el.parent();
         }
 
         return Number(el.find('.valueText').first().val());
       }
+
+      function findPollValue(el) {
+        while (!el.hasClass('pin')) {
+          el = el.parent();
+        }
+
+        return Number(el.find('.analogPollValue').first().val());
+      }
+
+
+      // QUERY HANDLERS
+      var pinPolls = {};
+      $('.setAnalogPollButton').on('click', function() {
+        var pinNum = findPinNum($(this));
+        var pollValue = findPollValue($(this));
+
+        // Clear prior polls on pin
+        if (pinPolls[pinNum] != null) window.clearInterval(pinPolls[pinNum]);
+
+        // Add new poll for pin
+        pinPolls[pinNum] = window.setInterval(function() {
+          socket.emit('queryState', pinNum);
+        }, pollValue);
+      });
+
 
       $('.queryStateButton').on('click', function() {
         socket.emit('queryState', findPinNum($(this)));
@@ -74,6 +101,14 @@
 
       socket.on('queriedState', function(data) {
         console.log(data);
+
+        // Add analog queries to textarea
+        var el = $('#' + data.pin);
+        if (el.hasClass('analog')) {
+          var textarea = el.find('textarea').first();
+          textarea.append(data.value + '\r');
+          textarea.animate({scrollTop:textarea[0].scrollHeight - textarea.height()},10);
+        }
       });
 
 

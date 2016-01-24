@@ -102,14 +102,13 @@ io.sockets.on('connection', function (socket) {
 
 
     // ANALOG PINS
-    // TODO: automatically send analog data when changed
     socket.on('toggleAnalogMode', function(pin) {
       pins[pin].mode = (pins[pin].mode === five.Pin.ANALOG ? five.Pin.OUTPUT : five.Pin.ANALOG);
 
       sendState(pin);
     });
 
-
+    
   }
 });
 
