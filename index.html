@@ -40,19 +40,10 @@
         <h4>[A0]</h4>
         <p><button class="analogModeToggleButton">Mode</button></p>
         <p><button class="queryStateButton">Query</button></p>
-        <p><input class="valueText" type="text"></p>
-        <p><button class="analogValueSetButton">Set</button></p>
+        <p><button class="digitalValueToggleButton">Toggle</button></p>
         <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
       </div>
 
-      <div class="pin" id="15" style="float:left;">
-        <h4>[A1]</h4>
-        <p><button class="analogModeToggleButton">Mode</button></p>
-        <p><button class="queryStateButton">Query</button></p>
-        <p><input class="valueText" type="text"></p>
-        <p><button class="analogValueSetButton">Set</button></p>
-        <textarea style="background:#222; color:#00ff00;" rows="8" id="analogData"></textarea>
-      </div>
     </div>
 
 
@@ -112,13 +103,6 @@
       // ANALOG PINS
       $('.analogModeToggleButton').on('click', function() {
         socket.emit('toggleAnalogMode', findPinNum($(this)));
-      });
-
-      $('.analogValueSetButton').on('click', function() {
-        var pin = findPinNum($(this));
-        var value = findPinValue($(this));
-
-        socket.emit('setAnalogValue', { pin: pin, value: value });
       });
 
     </script>

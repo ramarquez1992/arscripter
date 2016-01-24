@@ -81,6 +81,8 @@ io.sockets.on('connection', function (socket) {
     socket.on('toggleDigitalValue', function(pin) {
       pins[pin].query(function(state) {
         pins[pin][ state.value ? 'low' : 'high' ]();
+
+        sendState(pin);
       });
     });
 
@@ -101,18 +103,12 @@ io.sockets.on('connection', function (socket) {
 
     // ANALOG PINS
     // TODO: automatically send analog data when changed
-    // TODO: remove analog set value to digital toggle
     socket.on('toggleAnalogMode', function(pin) {
       pins[pin].mode = (pins[pin].mode === five.Pin.ANALOG ? five.Pin.OUTPUT : five.Pin.ANALOG);
 
       sendState(pin);
     });
 
-    socket.on('setAnalogValue', function(data) {
-      pins[data.pin].write(data.value);
-
-      sendState(data.pin);
-    });
 
   }
 });
