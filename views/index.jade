@@ -5,13 +5,15 @@ html
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title web-arduino
+    link(rel='stylesheet', href='/build/main.css')
+    link(rel='apple-touch-icon', href='/assets/favicon.png')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
     script(src='/socket.io/socket.io.js')
-    script(src='../js/controller.js')
+    script(src='/js/main.js')
 
   body
     div#digital
-      h2 Diijjgital
+      h2 Digital
 
       div#6.pin.digital.pwm
         h4 [06]
