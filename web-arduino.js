@@ -5,6 +5,7 @@ var app = require('http').createServer(handler),
 
 var socket = {};
 
+
 // INITIALIZE BOARD
 var board = new five.Board();
 
@@ -48,6 +49,7 @@ function sendState(pin) {
   });
 }
 
+
 // DIGITAL PINS
 function setDigitalPinToInput(pin) {
   pins[pin] = new five.Pin({
@@ -87,6 +89,7 @@ function toggleDigitalValue(pin) {
   });
 }
 
+
 // PWM PINS
 function togglePWMMode(pin) {
   if (pins[pin].mode === five.Pin.PWM) {
@@ -104,6 +107,7 @@ function setPWMValue(data) {
   sendState(data.pin);
 }
 
+
 // ANALOG PINS
 function toggleAnalogMode(pin) {
   if (pins[pin].mode === five.Pin.ANALOG) {
@@ -114,6 +118,7 @@ function toggleAnalogMode(pin) {
 
   sendState(pin);
 }
+
 
 // SOCKET CONTROLLER
 io.sockets.on('connection', function (s) {
