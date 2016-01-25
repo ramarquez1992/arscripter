@@ -13,7 +13,6 @@ var board = new five.Board();
   port: '/dev/tty.ARDUINO-DevB'
 });*/
 
-
 var pins = [];
 var digitalPinCount = 14;
 var analogPinCount = 6;
@@ -125,16 +124,13 @@ io.sockets.on('connection', function (s) {
     // QUERIES
     socket.on('queryState', sendState);
 
-
     // DIGITAL PINS
     socket.on('toggleDigitalMode', toggleDigitalMode);
     socket.on('toggleDigitalValue', toggleDigitalValue);
 
-
     // PWM PINS
     socket.on('togglePWMMode', togglePWMMode);
     socket.on('setPWMValue', setPWMValue);
-
 
     // ANALOG PINS
     socket.on('toggleAnalogMode', toggleAnalogMode);
@@ -145,9 +141,12 @@ io.sockets.on('connection', function (s) {
 
 // WEB SERVER
 var indexFilename = 'index.html';
+
 app.listen(8080);
 function handler (req, res) {
-  fs.readFile(__dirname + '/' + indexFilename,
+  if (req.url === '/') req.url += indexFilename;
+
+  fs.readFile(__dirname + req.url,
   function (err, data) {
     if (err) {
       res.writeHead(500);
