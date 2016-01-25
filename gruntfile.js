@@ -3,7 +3,7 @@ module.exports = function(grunt) {
     jade: {
       compile: {
         options: {
-          pretty: true,
+          pretty: true
         },
         files: [{
           expand: true,
@@ -14,7 +14,6 @@ module.exports = function(grunt) {
         }]
       }
     },
-
 
     sass: {
       dist: {
@@ -28,6 +27,9 @@ module.exports = function(grunt) {
       }
     },
 
+    jshint: {
+      src: ['*.js', 'js/*.js']
+    },
 
     watch: {
       grunt: { files: ['gruntfile.js'] },
@@ -35,9 +37,15 @@ module.exports = function(grunt) {
         files: 'views/*.jade',
         tasks: ['jade']
       },
+
       sass: {
         files: 'styles/*.sass',
         tasks: ['sass']
+      },
+
+      jshint: {
+        files: ['*.js', 'js/*.js'],
+        tasks: ['jshint']
       }
     }
 
@@ -45,9 +53,10 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.registerTask('build', 'jade->html, sass->css', ['jade', 'sass']);
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.registerTask('build', 'jade->html, sass->css', ['jade', 'sass', 'jshint']);
 
-  grunt.registerTask('default', 'jade->html, sass->css', ['jade', 'sass', 'watch']);
+  grunt.registerTask('default', 'jade->html, sass->css', ['jade', 'sass', 'jshint', 'watch']);
   grunt.loadNpmTasks('grunt-contrib-watch');
 };
 
