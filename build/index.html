@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>web-arduino</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/controller.js"></script>
+  </head>
+  <body>
+    <div id="digital">
+      <h2>Diijjgital</h2>
+      <div id="6" class="pin digital pwm">
+        <h4>[06]</h4>
+        <button class="pwmModeToggleButton">PWM</button>
+        <input type="text" class="valueText">
+        <button class="pwmValueSetButton">Set</button>
+        <button class="digitalModeToggleButton">Mode</button>
+        <button class="queryStateButton">Query</button>
+        <button class="digitalValueToggleButton">Toggle</button>
+      </div>
+      <div id="12" class="pin digital">
+        <h4>[12]</h4>
+        <button class="digitalModeToggleButton">Mode</button>
+        <button class="queryStateButton">Query</button>
+        <button class="digitalValueToggleButton">Toggle</button>
+      </div>
+      <div id="13" class="pin digital">
+        <h4>[13]</h4>
+        <button class="digitalModeToggleButton">Mode</button>
+        <button class="queryStateButton">Query</button>
+        <button class="digitalValueToggleButton">Toggle</button>
+      </div>
+    </div>
+    <div id="analog">
+      <h2>Analog</h2>
+      <div id="14" class="pin analog">
+        <h4>[A0]</h4>
+        <button class="analogModeToggleButton">Mode</button>
+        <button class="queryStateButton">Query</button>
+        <button class="digitalValueToggleButton">Toggle</button><br>
+        <textarea rows="8" class="analogData"></textarea><br>
+        <input type="text" class="pollValue">
+        <button class="setPollButton">Poll (ms)</button>
+        <button class="stopPollButton">Stop</button>
+      </div>
+    </div>
+  </body>
+</html>

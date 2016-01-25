@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title web-arduino
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='../js/controller.js')
+
+  body
+    div#digital
+      h2 Diijjgital
+
+      div#6.pin.digital.pwm
+        h4 [06]
+        button.pwmModeToggleButton PWM
+        input.valueText(type='text')
+        button.pwmValueSetButton Set
+        button.digitalModeToggleButton Mode
+        button.queryStateButton Query
+        button.digitalValueToggleButton Toggle
+
+      div#12.pin.digital
+        h4 [12]
+        button.digitalModeToggleButton Mode
+        button.queryStateButton Query
+        button.digitalValueToggleButton Toggle
+
+      div#13.pin.digital
+        h4 [13]
+        button.digitalModeToggleButton Mode
+        button.queryStateButton Query
+        button.digitalValueToggleButton Toggle
+
+
+    div#analog
+      h2 Analog
+
+      div#14.pin.analog
+        h4 [A0]
+        button.analogModeToggleButton Mode
+        button.queryStateButton Query
+        button.digitalValueToggleButton Toggle
+        br
+        textarea.analogData(rows='8')
+        br
+        input.pollValue(type='text')
+        button.setPollButton Poll (ms)
+        button.stopPollButton Stop
+

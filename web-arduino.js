@@ -140,7 +140,7 @@ io.sockets.on('connection', function (s) {
 
 
 // WEB SERVER
-var indexFilename = 'index.html';
+var indexFilename = 'build/index.html';
 
 app.listen(8080);
 function handler (req, res) {
