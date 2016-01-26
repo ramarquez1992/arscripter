@@ -158,9 +158,68 @@ function initButtons() {
   });
 }
 
+function setPinToInput(pin) {
+}
+
+function setPinToOutput(pin) {
+}
+
+function setPinToAnalog(pin) {
+}
+
+function setPinToPWM(pin) {
+}
+
+function changePinMode(pin, mode) {
+  switch(mode) {
+    case 0:
+      setPinToInput(pin);
+      break;
+
+    case 1:
+      setPinToOutput(pin);
+      break;
+
+    case 2:
+      setPinToAnalog(pin);
+      break;
+
+    case 3:
+      setPinToPWM(pin);
+      break;
+
+    default:
+      alert('Invalid pin mode: ' + mode);
+  }
+}
+
+function changePinValue(pin, value) {
+  var el = findByPinNum(pin);
+
+  var low = el.find('.low').first();
+  var high = el.find('.high').first();
+  var pwmValue = el.find('.pwmValue').first();
+
+  low.css('display', 'none');
+  high.css('display', 'none');
+  pwmValue.css('display', 'none');
+
+  if (value === 0) {
+    low.css('display', 'block');
+  } else if (value === 1) {
+    high.css('display', 'block');
+  } else {
+    pwmValue.css('display', 'block');
+    pwmValue.text(value);
+  }
+}
+
 function initSocket() {
   socket.on('queriedState', function(data) {
     console.log(data);
+
+    changePinMode(data.pin, data.mode);
+    changePinValue(data.pin, data.value);
 
     // Add analog queries to textarea
     var el = findByPinNum(data.pin);

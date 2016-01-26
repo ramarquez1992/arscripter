@@ -47,6 +47,15 @@ main {
     height: 10em; }
     .pin.digital input {
       width: 95%; }
+    .pin.digital .low {
+      display: block;
+      color: #f00; }
+    .pin.digital .high {
+      display: none;
+      color: #0f0; }
+    .pin.digital .pwmValue {
+      display: none;
+      color: #fff; }
   .pin.analog {
     width: 15.4%;
     height: 15em; }
