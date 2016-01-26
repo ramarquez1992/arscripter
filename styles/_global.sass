@@ -24,18 +24,40 @@ header
     right: 1em
     top: 1em
 
+main
+  width: 1000px
+  margin: auto
+
 .pinSet
   clear: both
   margin-bottom: 2em
 
 .pin
   float: left
-  width: 10em
-  height: 12em
+  margin-right: 1%
+  margin-bottom: 1%
   background-color: #666
   border: 1px solid #0a0
 
   h3
-    padding: 0
+    padding: .1em
     margin: 0
-    color: #f00
+    background-color: #000
+    color: #bbb
+    font-size: .8em
+
+  &.digital
+    width: 13%
+    height: 10em
+
+    input
+      width: 90%
+
+  &.analog
+    width: 15.4%
+    height: 15em
+
+    textarea
+      width: 90%
+      height: 5em
+

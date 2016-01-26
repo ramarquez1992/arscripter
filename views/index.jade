@@ -36,7 +36,7 @@ html(ng-app='mainApp')
             button.pwmValueSetButton Set
 
           button.digitalModeToggleButton Mode
-          button.queryStateButton Query
+          //button.queryStateButton Query
           button.digitalValueToggleButton Toggle
         .clear
 
@@ -47,9 +47,9 @@ html(ng-app='mainApp')
           meta(name='pinNum', content="{{pin}}")
           h3 [A{{pin-board.digitalPins.length}}]
           button.analogModeToggleButton Mode
-          button.queryStateButton Query
+          //button.queryStateButton Query
           button.digitalValueToggleButton Toggle
-          textarea.analogData(rows='8')
+          textarea.analogData
           input.pollValue(type='text')
           button.setPollButton Poll (ms)
           button.stopPollButton Stop

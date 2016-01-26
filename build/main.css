@@ -20,19 +20,36 @@ header {
     right: 1em;
     top: 1em; }
 
+main {
+  width: 1000px;
+  margin: auto; }
+
 .pinSet {
   clear: both;
   margin-bottom: 2em; }
 
 .pin {
   float: left;
-  width: 10em;
-  height: 12em;
+  margin-right: 1%;
+  margin-bottom: 1%;
   background-color: #666;
   border: 1px solid #0a0; }
   .pin h3 {
-    padding: 0;
+    padding: 0.1em;
     margin: 0;
-    color: #f00; }
+    background-color: #000;
+    color: #bbb;
+    font-size: 0.8em; }
+  .pin.digital {
+    width: 13%;
+    height: 10em; }
+    .pin.digital input {
+      width: 90%; }
+  .pin.analog {
+    width: 15.4%;
+    height: 15em; }
+    .pin.analog textarea {
+      width: 90%;
+      height: 5em; }
 
 /*# sourceMappingURL=main.css.map */
