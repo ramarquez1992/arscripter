@@ -23,11 +23,11 @@
       </div>
       <div id="digital">
         <h2>Digital</h2>
-        <div ng-repeat="pin in digitalPins" class="pin digital pwm">
+        <div ng-repeat="pin in board.digitalPins" class="pin digital">
           <meta name="pinNum" content="{{pin}}">
-          <h4>[{{pin}}]</h4><span ng-if="isPWM(pin)">
+          <h4>[{{pin}}]</h4><span ng-if="isPWM(pin)" class="pwm">
             <button class="pwmModeToggleButton">PWM</button>
-            <input type="text" class="valueText">
+            <input type="text" class="pwmValue">
             <button class="pwmValueSetButton">Set</button></span>
           <button class="digitalModeToggleButton">Mode</button>
           <button class="queryStateButton">Query</button>
@@ -36,9 +36,9 @@
       </div>
       <div id="analog">
         <h2>Analog</h2>
-        <div id="pin" ng-repeat="pin in analogPins" class="pin analog">
+        <div ng-repeat="pin in board.analogPins" class="pin analog">
           <meta name="pinNum" content="{{pin}}">
-          <h4>[A{{pin-digitalPins.length}}]</h4>
+          <h4>[A{{pin-board.digitalPins.length}}]</h4>
           <button class="analogModeToggleButton">Mode</button>
           <button class="queryStateButton">Query</button>
           <button class="digitalValueToggleButton">Toggle</button><br>

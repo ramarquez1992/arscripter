@@ -23,13 +23,13 @@ html(ng-app='mainApp')
       div#digital
         h2 Digital
 
-        div.pin.digital.pwm(ng-repeat='pin in digitalPins')
+        div.pin.digital(ng-repeat='pin in board.digitalPins')
           meta(name='pinNum', content="{{pin}}")
           h4 [{{pin}}]
 
-          span(ng-if='isPWM(pin)')
+          span.pwm(ng-if='isPWM(pin)')
             button.pwmModeToggleButton PWM
-            input.valueText(type='text')
+            input.pwmValue(type='text')
             button.pwmValueSetButton Set
 
           button.digitalModeToggleButton Mode
@@ -39,9 +39,9 @@ html(ng-app='mainApp')
       div#analog
         h2 Analog
 
-        div#pin.pin.analog(ng-repeat='pin in analogPins')
+        div.pin.analog(ng-repeat='pin in board.analogPins')
           meta(name='pinNum', content="{{pin}}")
-          h4 [A{{pin-digitalPins.length}}]
+          h4 [A{{pin-board.digitalPins.length}}]
           button.analogModeToggleButton Mode
           button.queryStateButton Query
           button.digitalValueToggleButton Toggle
