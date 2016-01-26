@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>web-arduino</title>
     <link rel="stylesheet" href="/build/main.css">
     <link rel="apple-touch-icon" href="/assets/favicon.png">
@@ -13,19 +12,22 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
   </head>
-  <body>
-    <main ng-controller="mainController">
-      <div>
+  <body ng-controller="mainController">
+    <header>
+      <h1><a href="https://github.com/richard92m/web-arduino">web-arduino</a></h1>
+      <div id="boardSelection">
         <select id="boardType">
           <option ng-repeat="(key, val) in boardTypes" value="{{key}}">{{val.name}}</option>
         </select>
         <button ng-click="boardChanged()">change</button>
       </div>
-      <div id="digital">
-        <h2>Digital</h2>
+    </header>
+    <main>
+      <div id="digitalPins" class="pinSet">
+        <!--h2 Digital-->
         <div ng-repeat="pin in board.digitalPins" class="pin digital">
           <meta name="pinNum" content="{{pin}}">
-          <h4>[{{pin}}]</h4><span ng-if="isPWM(pin)" class="pwm">
+          <h3>[{{pin}}]</h3><span ng-if="isPWM(pin)" class="pwm">
             <button class="pwmModeToggleButton">PWM</button>
             <input type="text" class="pwmValue">
             <button class="pwmValueSetButton">Set</button></span>
@@ -33,20 +35,22 @@
           <button class="queryStateButton">Query</button>
           <button class="digitalValueToggleButton">Toggle</button>
         </div>
+        <div class="clear"></div>
       </div>
-      <div id="analog">
-        <h2>Analog</h2>
+      <div id="analogPins" class="pinSet">
+        <!--h2 Analog-->
         <div ng-repeat="pin in board.analogPins" class="pin analog">
           <meta name="pinNum" content="{{pin}}">
-          <h4>[A{{pin-board.digitalPins.length}}]</h4>
+          <h3>[A{{pin-board.digitalPins.length}}]</h3>
           <button class="analogModeToggleButton">Mode</button>
           <button class="queryStateButton">Query</button>
-          <button class="digitalValueToggleButton">Toggle</button><br>
-          <textarea rows="8" class="analogData"></textarea><br>
+          <button class="digitalValueToggleButton">Toggle</button>
+          <textarea rows="8" class="analogData"></textarea>
           <input type="text" class="pollValue">
           <button class="setPollButton">Poll (ms)</button>
           <button class="stopPollButton">Stop</button>
         </div>
+        <div class="clear"></div>
       </div>
     </main>
   </body>

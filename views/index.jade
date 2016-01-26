@@ -3,7 +3,6 @@ html(ng-app='mainApp')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
     title web-arduino
     link(rel='stylesheet', href='/build/main.css')
     link(rel='apple-touch-icon', href='/assets/favicon.png')
@@ -13,19 +12,23 @@ html(ng-app='mainApp')
     script(src='/socket.io/socket.io.js')
     script(src='/js/main.js')
 
-  body
-    main(ng-controller='mainController')
-      div
+  body(ng-controller='mainController')
+    header
+      h1
+        a(href='https://github.com/richard92m/web-arduino') web-arduino
+
+      div#boardSelection
         select#boardType
           option(ng-repeat='(key, val) in boardTypes', value='{{key}}') {{val.name}}
         button(ng-click='boardChanged()') change
 
-      div#digital
-        h2 Digital
+    main
+      div#digitalPins.pinSet
+        //h2 Digital
 
         div.pin.digital(ng-repeat='pin in board.digitalPins')
           meta(name='pinNum', content="{{pin}}")
-          h4 [{{pin}}]
+          h3 [{{pin}}]
 
           span.pwm(ng-if='isPWM(pin)')
             button.pwmModeToggleButton PWM
@@ -35,20 +38,20 @@ html(ng-app='mainApp')
           button.digitalModeToggleButton Mode
           button.queryStateButton Query
           button.digitalValueToggleButton Toggle
+        .clear
 
-      div#analog
-        h2 Analog
+      div#analogPins.pinSet
+        //h2 Analog
 
         div.pin.analog(ng-repeat='pin in board.analogPins')
           meta(name='pinNum', content="{{pin}}")
-          h4 [A{{pin-board.digitalPins.length}}]
+          h3 [A{{pin-board.digitalPins.length}}]
           button.analogModeToggleButton Mode
           button.queryStateButton Query
           button.digitalValueToggleButton Toggle
-          br
           textarea.analogData(rows='8')
-          br
           input.pollValue(type='text')
           button.setPollButton Poll (ms)
           button.stopPollButton Stop
+        .clear
 

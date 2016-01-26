@@ -1,7 +1,38 @@
+.clear {
+  clear: both; }
+
 body {
   background-color: #333;
   color: #0ff;
-  font-family: calibri, helvetica-neue, helvetica, arial, sans-serif;
+  font-family: Monaco, "Lucida Console", monospace;
   font-size: medium; }
+
+button, textarea {
+  font-family: Monaco, "Lucida Console", monospace; }
+
+header {
+  margin-bottom: 3em; }
+  header h1 a {
+    color: #0c0;
+    text-decoration: none; }
+  header #boardSelection {
+    position: absolute;
+    right: 1em;
+    top: 1em; }
+
+.pinSet {
+  clear: both;
+  margin-bottom: 2em; }
+
+.pin {
+  float: left;
+  width: 10em;
+  height: 12em;
+  background-color: #666;
+  border: 1px solid #0a0; }
+  .pin h3 {
+    padding: 0;
+    margin: 0;
+    color: #f00; }
 
 /*# sourceMappingURL=main.css.map */

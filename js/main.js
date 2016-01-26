@@ -36,6 +36,8 @@ app.controller('mainController', function($scope) {
 
     $scope.board = $scope.boardTypes[newBoardType];
     initButtons();
+
+    socket.emit('initBoard', { digitalPinCount: $scope.board.digitalPins.length, analogPinCount: $scope.board.analogPins.length });
   };
 
   $scope.isPWM = function(pin) {

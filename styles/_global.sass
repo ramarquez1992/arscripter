@@ -1,4 +1,7 @@
-$font-stack: calibri,helvetica-neue,helvetica,arial,sans-serif
+$font-stack: Monaco, 'Lucida Console', monospace
+
+.clear
+  clear: both
 
 body
   background-color: #333
@@ -6,3 +9,33 @@ body
   font-family: $font-stack
   font-size: medium
 
+button, textarea
+  font-family: $font-stack
+
+header
+  margin-bottom: 3em
+
+  h1 a
+    color: #0c0
+    text-decoration: none
+
+  #boardSelection
+    position: absolute
+    right: 1em
+    top: 1em
+
+.pinSet
+  clear: both
+  margin-bottom: 2em
+
+.pin
+  float: left
+  width: 10em
+  height: 12em
+  background-color: #666
+  border: 1px solid #0a0
+
+  h3
+    padding: 0
+    margin: 0
+    color: #f00

@@ -25,20 +25,26 @@ function initDigitalPins(n) {
   }
 }
 
+// Ensure initDigitalPins() is called first
 function initAnalogPins(n) {
+  var digitalPinCount = pins.length;
+
   for (var i = 0; i < n; i++) {
     pins.push(new five.Pin(i + digitalPinCount));
     pins[i + digitalPinCount].mode = five.Pin.ANALOG;
   }
 }
 
-function initPins() {
-  initDigitalPins(digitalPinCount);
-  initAnalogPins(analogPinCount);
+function initBoard(data) {
+  pins = [];
+
+  initDigitalPins(data.digitalPinCount);
+  initAnalogPins(data.analogPinCount);
 }
 
 board.on('ready', function() {
-  initPins();
+  // Initialize board as uno
+  initBoard({ digitalPinCount: 14, analogPinCount: 6 });
 });
 
 
@@ -125,6 +131,8 @@ io.sockets.on('connection', function (s) {
   socket = s;
 
   if (board.isReady){
+
+    socket.on('initBoard', initBoard);
 
     // QUERIES
     socket.on('queryState', sendState);
