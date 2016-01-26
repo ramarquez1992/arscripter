@@ -1,3 +1,51 @@
+// ANGULAR
+var app = angular.module('mainApp', ['ngRoute']);
+
+var boardTypes = {
+  'uno': {
+    'name': 'UNO',
+    'digitalPins': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    'analogPins': [14, 15, 16, 17, 18, 19],
+    'pwmPins': [3, 5, 6, 9, 10, 11]
+  },
+
+  /*'mega': {
+    'name': 'Mega 2560',
+    'digitalPins': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    'analogPins': [14, 15, 16, 17, 18, 19]
+  },*/
+  
+  'zero': {
+    'name': 'ZERO',
+    'digitalPins': [0, 1, 2],
+    'analogPins': [3, 4],
+    'pwmPins': [0]
+  }
+};
+
+
+app.controller('mainController', function($scope) {
+  $scope.boardTypes = boardTypes;
+
+  $scope.digitalPins = boardTypes.uno.digitalPins;
+  $scope.analogPins = boardTypes.uno.analogPins;
+  $scope.pwmPins = boardTypes.uno.pwmPins;
+
+  $scope.boardChanged = function() {
+    var newBoardType = $('#boardType').val();
+
+    $scope.digitalPins = boardTypes[newBoardType].digitalPins;
+    $scope.analogPins = boardTypes[newBoardType].analogPins;
+    $scope.pwmPins = boardTypes[newBoardType].pwmPins;
+  };
+
+  $scope.isPWM = function(pin) {
+    return ($.inArray(pin, $scope.pwmPins) > -1 ? true : false);
+  };
+
+});
+
+
 var socket = io.connect('http://localhost:8080');
 
 // QUERY HANDLERS
@@ -16,7 +64,7 @@ function findPinNum(el) {
     el = el.parent();
   }
 
-  return Number(el.attr('id'));
+  return Number(el.find('meta[name="pinNum"]').first().attr('content'));
 }
 
 function findPinValue(el) {

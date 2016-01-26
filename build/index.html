@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="mainApp">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,47 +7,47 @@
     <title>web-arduino</title>
     <link rel="stylesheet" href="/build/main.css">
     <link rel="apple-touch-icon" href="/assets/favicon.png">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
   </head>
   <body>
-    <div id="digital">
-      <h2>Digital</h2>
-      <div id="6" class="pin digital pwm">
-        <h4>[06]</h4>
-        <button class="pwmModeToggleButton">PWM</button>
-        <input type="text" class="valueText">
-        <button class="pwmValueSetButton">Set</button>
-        <button class="digitalModeToggleButton">Mode</button>
-        <button class="queryStateButton">Query</button>
-        <button class="digitalValueToggleButton">Toggle</button>
+    <main ng-controller="mainController">
+      <div>
+        <select id="boardType">
+          <option ng-repeat="(key, val) in boardTypes" value="{{key}}">{{val.name}}</option>
+        </select>
+        <button ng-click="boardChanged()">change</button>
       </div>
-      <div id="12" class="pin digital">
-        <h4>[12]</h4>
-        <button class="digitalModeToggleButton">Mode</button>
-        <button class="queryStateButton">Query</button>
-        <button class="digitalValueToggleButton">Toggle</button>
+      <div id="digital">
+        <h2>Digital</h2>
+        <div ng-repeat="pin in digitalPins" class="pin digital pwm">
+          <meta name="pinNum" content="{{pin}}">
+          <h4>[{{pin}}]</h4><span ng-if="isPWM(pin)">
+            <button class="pwmModeToggleButton">PWM</button>
+            <input type="text" class="valueText">
+            <button class="pwmValueSetButton">Set</button></span>
+          <button class="digitalModeToggleButton">Mode</button>
+          <button class="queryStateButton">Query</button>
+          <button class="digitalValueToggleButton">Toggle</button>
+        </div>
       </div>
-      <div id="13" class="pin digital">
-        <h4>[13]</h4>
-        <button class="digitalModeToggleButton">Mode</button>
-        <button class="queryStateButton">Query</button>
-        <button class="digitalValueToggleButton">Toggle</button>
+      <div id="analog">
+        <h2>Analog</h2>
+        <div id="pin" ng-repeat="pin in analogPins" class="pin analog">
+          <meta name="pinNum" content="{{pin}}">
+          <h4>[A{{pin-digitalPins.length}}]</h4>
+          <button class="analogModeToggleButton">Mode</button>
+          <button class="queryStateButton">Query</button>
+          <button class="digitalValueToggleButton">Toggle</button><br>
+          <textarea rows="8" class="analogData"></textarea><br>
+          <input type="text" class="pollValue">
+          <button class="setPollButton">Poll (ms)</button>
+          <button class="stopPollButton">Stop</button>
+        </div>
       </div>
-    </div>
-    <div id="analog">
-      <h2>Analog</h2>
-      <div id="14" class="pin analog">
-        <h4>[A0]</h4>
-        <button class="analogModeToggleButton">Mode</button>
-        <button class="queryStateButton">Query</button>
-        <button class="digitalValueToggleButton">Toggle</button><br>
-        <textarea rows="8" class="analogData"></textarea><br>
-        <input type="text" class="pollValue">
-        <button class="setPollButton">Poll (ms)</button>
-        <button class="stopPollButton">Stop</button>
-      </div>
-    </div>
+    </main>
   </body>
 </html>
