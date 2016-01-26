@@ -12,6 +12,9 @@ body
 button, textarea
   font-family: $font-stack
 
+input:disabled
+  opacity: 0.5
+
 header
   margin-bottom: 3em
 
@@ -39,6 +42,19 @@ main
   background-color: #666
   border: 1px solid #0a0
 
+  &.digital
+    width: 13%
+    height: 10em
+
+
+  &.analog
+    width: 15.4%
+    height: 15em
+
+    textarea
+      width: 95%
+      height: 5em
+
   h3
     padding: .1em
     margin: 0
@@ -49,31 +65,26 @@ main
   .controls
     margin: .2em
 
-  &.digital
-    width: 13%
-    height: 10em
+  input
+    width: 95%
 
-    input
-      width: 95%
+  .modeToggleButton
+    text-transform: uppercase
+  .out
+    color: #f00
+  .in
+    color: #0f0
+  .analog
+    color: #fff
+  .pwm
+    color: #00f
 
-    .low
-      display: block
-      color: #f00
-    .high
-      display: none
-      color: #0f0
-    .pwmValue
-      display: none
-      color: #fff
-
-  &.analog
-    width: 15.4%
-    height: 15em
-
-    textarea
-      width: 95%
-      height: 5em
-
-    input
-      width: 95%
+  .valueToggleButton
+    text-transform: uppercase
+  .low
+    color: #f00
+  .high
+    color: #0f0
+  .numValue
+    color: #fff
 

@@ -57,7 +57,7 @@ function sendState(pin) {
 
 
 // DIGITAL PINS
-function setDigitalPinToInput(pin) {
+function setPinToInput(pin) {
   pins[pin] = new five.Pin({
     pin: pin,
     type: 'digital',
@@ -73,15 +73,15 @@ function setDigitalPinToInput(pin) {
   });
 }
 
-function setDigitalPinToOutput(pin) {
+function setPinToOutput(pin) {
   pins[pin] = new five.Pin(pin);
 }
 
 function toggleDigitalMode(pin) {
   if (pins[pin].mode === five.Pin.INPUT) {
-    setDigitalPinToOutput(pin);
+    setPinToOutput(pin);
   } else {
-    setDigitalPinToInput(pin);
+    setPinToInput(pin);
   }
 
   sendState(pin);
@@ -99,7 +99,9 @@ function toggleDigitalValue(pin) {
 // PWM PINS
 function togglePWMMode(pin) {
   if (pins[pin].mode === five.Pin.PWM) {
-    pins[pin].mode = five.Pin.OUTPUT;
+    setPinToInput(pin);
+  } else if (pins[pin].mode === five.Pin.INPUT) {
+    setPinToOutput(pin);
   } else {
     pins[pin].mode = five.Pin.PWM;
   }

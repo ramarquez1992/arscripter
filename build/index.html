@@ -24,36 +24,29 @@
     </header>
     <main>
       <div id="digitalPins" class="pinSet">
-        <!--h2 Digital-->
         <div ng-repeat="pin in board.digitalPins" class="pin digital">
           <meta name="pinNum" content="{{pin}}">
           <h3>[{{pin}}]</h3>
-          <div class="controls"><span ng-if="isPWM(pin)" class="pwm">
-              <button class="pwmModeToggleButton">PWM</button>
-              <input type="range" min="0" max="255" step="1" value="0" class="pwmSlider"></span>
-            <button class="digitalModeToggleButton">Mode</button>
-            <!--button.queryStateButton Query-->
-            <button class="digitalValueToggleButton">Toggle</button>
-            <p class="high">HIGH</p>
-            <p class="low">LOW</p>
-            <p class="pwmValue">0</p>
+          <div class="controls">
+            <p class="button modeToggleButton out">out</p>
+            <p class="button valueToggleButton low">low</p><span ng-if="isPWM(pin)" class="pwm">
+              <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span>
           </div>
         </div>
         <div class="clear"></div>
       </div>
       <div id="analogPins" class="pinSet">
-        <!--h2 Analog-->
         <div ng-repeat="pin in board.analogPins" class="pin analog">
           <meta name="pinNum" content="{{pin}}">
           <h3>[A{{pin-board.digitalPins.length}}]</h3>
           <div class="controls">
-            <button class="analogModeToggleButton">Mode</button>
+            <p class="button modeToggleButton analog">analog</p>
+            <p class="button valueToggleButton analog">0</p>
             <!--button.queryStateButton Query-->
-            <button class="digitalValueToggleButton">Toggle</button>
             <textarea class="analogData"></textarea>
             <input type="text" class="pollValue">
-            <button class="setPollButton">Poll (ms)</button>
-            <button class="stopPollButton">Stop</button>
+            <button class="button setPollButton">Poll (ms)</button>
+            <button class="button stopPollButton">Stop</button>
           </div>
         </div>
         <div class="clear"></div>

@@ -78,6 +78,29 @@ function findByPinNum(n) {
   return el;
 }
 
+function isAnalogPin(pin) {
+  var el = findByPinNum(pin);
+  var result = false;
+
+  if (el.hasClass('analog')) {
+    result = true;
+  }
+
+  return result;
+}
+
+function isPWMPin(pin) {
+  var el = findByPinNum(pin);
+  var result = false;
+
+  
+  if (el.find('.pwm').length > 0) {
+    result = true;
+  }
+
+  return result;
+}
+
 function findPinPWMValue(el) {
   while (!el.hasClass('pin')) {
     el = el.parent();
@@ -98,10 +121,39 @@ function findPollValue(el) {
 // INIT
 function initButtons() {
   // Remove all previous handlers to avoid duplicates
-  $('button').off('click');
+  $('.button').off('click');
+  $('.button').off('input');
 
 
-  // POLLS
+  $('.queryStateButton').on('click', function() {
+    socket.emit('queryState', findPinNum($(this)));
+  });
+  
+  $('.modeToggleButton').on('click', function() {
+    var pinNum = findPinNum($(this));
+
+    if (isAnalogPin(pinNum)) {
+      socket.emit('toggleAnalogMode', pinNum);
+    } else if (isPWMPin(pinNum)) {
+      socket.emit('togglePWMMode', pinNum);
+    } else {
+      socket.emit('toggleDigitalMode', pinNum);
+    }
+  });
+
+  $('.valueToggleButton').on('click', function() {
+    socket.emit('toggleDigitalValue', findPinNum($(this)));
+  });
+
+  $('.pwmSlider').on('input', function() {
+    var pin = findPinNum($(this));
+    var value = findPinPWMValue($(this));
+
+    socket.emit('setPWMValue', { pin: pin, value: value });
+  });
+
+
+  // ANALOG POLLS
   $('.stopPollButton').on('click', function() {
     stopPoll(findPinNum($(this)));
   });
@@ -117,100 +169,101 @@ function initButtons() {
       socket.emit('queryState', pinNum);
     }, pollValue);
   });
-
-  $('.queryStateButton').on('click', function() {
-    socket.emit('queryState', findPinNum($(this)));
-  });
-
-  
-  // DIGITAL PINS
-  $('.digitalModeToggleButton').on('click', function() {
-    socket.emit('toggleDigitalMode', findPinNum($(this)));
-  });
-
-  $('.digitalValueToggleButton').on('click', function() {
-    socket.emit('toggleDigitalValue', findPinNum($(this)));
-  });
-
-
-  // PWM PINS
-  $('.pwmModeToggleButton').on('click', function() {
-    socket.emit('togglePWMMode', findPinNum($(this)));
-  });
-
-  $('.pwmValueSetButton').on('click', function() {
-    var pin = findPinNum($(this));
-    var value = findPinPWMValue($(this));
-
-    socket.emit('setPWMValue', { pin: pin, value: value });
-  });
-
-  $('.pwmSlider').on('input', function() {
-    var pin = findPinNum($(this));
-    var value = findPinPWMValue($(this));
-
-    socket.emit('setPWMValue', { pin: pin, value: value });
-  });
-
-  // ANALOG PINS
-  $('.analogModeToggleButton').on('click', function() {
-    socket.emit('toggleAnalogMode', findPinNum($(this)));
-  });
 }
 
 function setPinToInput(pin) {
-}
+  //set mode signal element to input
+  if (isPWMPin(pin)) findByPinNum(pin).find('.pwmSlider').first().prop('disabled', true);
 
-function setPinToOutput(pin) {
-}
+  var el = findByPinNum(pin).find('.digitalValueToggleButton').first();
 
-function setPinToAnalog(pin) {
-}
+  el.toggleClass('low', false);
+  el.toggleClass('high', false);
+  el.toggleClass('pwmValue', false);
 
-function setPinToPWM(pin) {
-}
-
-function changePinMode(pin, mode) {
-  switch(mode) {
-    case 0:
-      setPinToInput(pin);
-      break;
-
-    case 1:
-      setPinToOutput(pin);
-      break;
-
-    case 2:
-      setPinToAnalog(pin);
-      break;
-
-    case 3:
-      setPinToPWM(pin);
-      break;
-
-    default:
-      alert('Invalid pin mode: ' + mode);
+  if (value === 0) {
+    el.toggleClass('low', true);
+    el.text('low');
+  } else if (value === 1) {
+    el.toggleClass('high', true);
+    el.text('high');
+  } else {
+    el.toggleClass('pwmValue', true);
+    el.text(value);
   }
 }
 
-function changePinValue(pin, value) {
-  var el = findByPinNum(pin);
+function setPinToOutput(pin) {
+  if (isPWMPin(pin)) findByPinNum(pin).find('.pwmSlider').first().prop('disabled', true);
+}
 
-  var low = el.find('.low').first();
-  var high = el.find('.high').first();
-  var pwmValue = el.find('.pwmValue').first();
+function setPinToAnalog(pin) {
+  if (isPWMPin(pin)) findByPinNum(pin).find('.pwmSlider').first().prop('disabled', true);
+}
 
-  low.css('display', 'none');
-  high.css('display', 'none');
-  pwmValue.css('display', 'none');
+function setPinToPWM(pin) {
+  findByPinNum(pin).find('.pwmSlider').first().prop('disabled', false);
+}
+
+function setPinMode(pin, mode) {
+  if (isPWMPin(pin)) findByPinNum(pin).find('.pwmSlider').first().prop('disabled', true);
+
+  var el = findByPinNum(pin).find('.modeToggleButton').first();
+
+  el.toggleClass('out', false);
+  el.toggleClass('in', false);
+  el.toggleClass('pwm', false);
+  el.toggleClass('analog', false);
+
+  var newClass;
+  var newText;
+
+  switch(mode) {
+    case 0:
+      newClass = 'in';
+      newText = 'in';
+      break;
+
+    case 1:
+      newClass = 'out';
+      newText = 'out';
+      break;
+
+    case 2:
+      newClass = 'analog';
+      newText = 'analog';
+      break;
+
+    case 3:
+      findByPinNum(pin).find('.pwmSlider').first().prop('disabled', false);
+      newClass = 'pwm';
+      newText = 'pwm';
+      break;
+
+    default:
+      newText = 'invalid';
+  }
+
+  el.toggleClass(newClass, true);
+  el.text(newText);
+}
+
+function setPinValue(pin, value) {
+  var el = findByPinNum(pin).find('.valueToggleButton').first();
+
+  el.toggleClass('low', false);
+  el.toggleClass('high', false);
+  el.toggleClass('numValue', false);
 
   if (value === 0) {
-    low.css('display', 'block');
+    el.toggleClass('low', true);
+    el.text('low');
   } else if (value === 1) {
-    high.css('display', 'block');
+    el.toggleClass('high', true);
+    el.text('high');
   } else {
-    pwmValue.css('display', 'block');
-    pwmValue.text(value);
+    el.toggleClass('numValue', true);
+    el.text(value);
   }
 }
 
@@ -218,8 +271,8 @@ function initSocket() {
   socket.on('queriedState', function(data) {
     console.log(data);
 
-    changePinMode(data.pin, data.mode);
-    changePinValue(data.pin, data.value);
+    setPinMode(data.pin, data.mode);
+    setPinValue(data.pin, data.value);
 
     // Add analog queries to textarea
     var el = findByPinNum(data.pin);

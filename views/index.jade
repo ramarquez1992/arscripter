@@ -24,39 +24,31 @@ html(ng-app='mainApp')
 
     main
       div#digitalPins.pinSet
-        //h2 Digital
-
         div.pin.digital(ng-repeat='pin in board.digitalPins')
           meta(name='pinNum', content="{{pin}}")
           h3 [{{pin}}]
 
           div.controls
-            span.pwm(ng-if='isPWM(pin)')
-              button.pwmModeToggleButton PWM
-              input.pwmSlider(type='range', min='0', max='255', step='1', value='0')
+            p.button.modeToggleButton.out out
+            p.button.valueToggleButton.low low
 
-            button.digitalModeToggleButton Mode
-            //button.queryStateButton Query
-            button.digitalValueToggleButton Toggle
-            p.high HIGH
-            p.low LOW
-            p.pwmValue 0
+            span.pwm(ng-if='isPWM(pin)')
+              input.button.pwmSlider(type='range', min='0', max='255', step='1', value='0', disabled)
+
         .clear
 
       div#analogPins.pinSet
-        //h2 Analog
-
         div.pin.analog(ng-repeat='pin in board.analogPins')
           meta(name='pinNum', content="{{pin}}")
           h3 [A{{pin-board.digitalPins.length}}]
 
           div.controls
-            button.analogModeToggleButton Mode
+            p.button.modeToggleButton.analog analog
+            p.button.valueToggleButton.analog 0
             //button.queryStateButton Query
-            button.digitalValueToggleButton Toggle
             textarea.analogData
             input.pollValue(type='text')
-            button.setPollButton Poll (ms)
-            button.stopPollButton Stop
+            button.button.setPollButton Poll (ms)
+            button.button.stopPollButton Stop
         .clear
 

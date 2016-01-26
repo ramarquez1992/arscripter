@@ -10,6 +10,9 @@ body {
 button, textarea {
   font-family: Monaco, "Lucida Console", monospace; }
 
+input:disabled {
+  opacity: 0.5; }
+
 header {
   margin-bottom: 3em; }
   header h1 a {
@@ -34,6 +37,15 @@ main {
   margin-bottom: 1%;
   background-color: #666;
   border: 1px solid #0a0; }
+  .pin.digital {
+    width: 13%;
+    height: 10em; }
+  .pin.analog {
+    width: 15.4%;
+    height: 15em; }
+    .pin.analog textarea {
+      width: 95%;
+      height: 5em; }
   .pin h3 {
     padding: 0.1em;
     margin: 0;
@@ -42,27 +54,25 @@ main {
     font-size: 0.8em; }
   .pin .controls {
     margin: 0.2em; }
-  .pin.digital {
-    width: 13%;
-    height: 10em; }
-    .pin.digital input {
-      width: 95%; }
-    .pin.digital .low {
-      display: block;
-      color: #f00; }
-    .pin.digital .high {
-      display: none;
-      color: #0f0; }
-    .pin.digital .pwmValue {
-      display: none;
-      color: #fff; }
-  .pin.analog {
-    width: 15.4%;
-    height: 15em; }
-    .pin.analog textarea {
-      width: 95%;
-      height: 5em; }
-    .pin.analog input {
-      width: 95%; }
+  .pin input {
+    width: 95%; }
+  .pin .modeToggleButton {
+    text-transform: uppercase; }
+  .pin .out {
+    color: #f00; }
+  .pin .in {
+    color: #0f0; }
+  .pin .analog {
+    color: #fff; }
+  .pin .pwm {
+    color: #00f; }
+  .pin .valueToggleButton {
+    text-transform: uppercase; }
+  .pin .low {
+    color: #f00; }
+  .pin .high {
+    color: #0f0; }
+  .pin .numValue {
+    color: #fff; }
 
 /*# sourceMappingURL=main.css.map */
