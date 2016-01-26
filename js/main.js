@@ -83,7 +83,7 @@ function findPinPWMValue(el) {
     el = el.parent();
   }
 
-  return Number(el.find('.pwmValue').first().val());
+  return Number(el.find('.pwmSlider').first().val());
 }
 
 function findPollValue(el) {
@@ -145,6 +145,12 @@ function initButtons() {
     socket.emit('setPWMValue', { pin: pin, value: value });
   });
 
+  $('.pwmSlider').on('input', function() {
+    var pin = findPinNum($(this));
+    var value = findPinPWMValue($(this));
+
+    socket.emit('setPWMValue', { pin: pin, value: value });
+  });
 
   // ANALOG PINS
   $('.analogModeToggleButton').on('click', function() {

@@ -40,16 +40,20 @@ main {
     background-color: #000;
     color: #bbb;
     font-size: 0.8em; }
+  .pin .controls {
+    margin: 0.2em; }
   .pin.digital {
     width: 13%;
     height: 10em; }
     .pin.digital input {
-      width: 90%; }
+      width: 95%; }
   .pin.analog {
     width: 15.4%;
     height: 15em; }
     .pin.analog textarea {
-      width: 90%;
+      width: 95%;
       height: 5em; }
+    .pin.analog input {
+      width: 95%; }
 
 /*# sourceMappingURL=main.css.map */
