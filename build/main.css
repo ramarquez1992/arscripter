@@ -10,6 +10,9 @@ body {
 button, textarea {
   font-family: Monaco, "Lucida Console", monospace; }
 
+.button {
+  cursor: pointer; }
+
 input:disabled {
   opacity: 0.5; }
 
@@ -18,10 +21,6 @@ header {
   header h1 a {
     color: #0c0;
     text-decoration: none; }
-  header #boardSelection {
-    position: absolute;
-    right: 1em;
-    top: 1em; }
 
 main {
   width: 1000px;

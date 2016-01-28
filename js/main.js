@@ -1,50 +1,28 @@
 // INIT
-var app = angular.module('mainApp', ['ngRoute']);
 var socket = io.connect('http://localhost:8080');
 
 
-// BOARD CONFIGURATIONS
-
-app.controller('mainController', function($scope) {
-  $scope.boardTypes = {
-    'uno': {
-      'name': 'UNO',
-      'digitalPins': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      'analogPins': [14, 15, 16, 17, 18, 19],
-      'pwmPins': [3, 5, 6, 9, 10, 11]
-    },
-
-    /*'mega': {
-      'name': 'Mega 2560',
-      'digitalPins': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      'analogPins': [14, 15, 16, 17, 18, 19]
-    },*/
-    
-    'zero': {
-      'name': 'ZERO',
-      'digitalPins': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-      'analogPins': [14, 15, 16, 17, 18, 19],
-      'pwmPins': [3, 5, 6, 9, 10, 11]
-    }
-  };
-
-  // Set board type to uno initially
-  $scope.board = $scope.boardTypes.uno;
-
-  $scope.boardChanged = function() {
-    var newBoardType = $('#boardType').val();
-
-    $scope.board = $scope.boardTypes[newBoardType];
-    initButtons();
-
-    socket.emit('initBoard', { digitalPinCount: $scope.board.digitalPins.length, analogPinCount: $scope.board.analogPins.length });
-  };
-
-  $scope.isPWM = function(pin) {
-    return ($.inArray(pin, $scope.board.pwmPins) > -1 ? true : false);
-  };
-
+var errors = {};
+$.ajax({
+  dataType: 'json',
+  url: '../errors.json',
+  async: false,
+  success: function(data) {
+    errors = data;
+  }
 });
+
+var boardTypes = {};
+$.ajax({
+  dataType: 'json',
+  url: '../boardTypes.json',
+  async: false,
+  success: function(data) {
+    boardTypes = data;
+  }
+});
+
+var boardType = null;
 
 
 // POLL MANAGEMENT
@@ -90,15 +68,7 @@ function isAnalogPin(pin) {
 }
 
 function isPWMPin(pin) {
-  var el = findByPinNum(pin);
-  var result = false;
-
-  
-  if (el.find('.pwm').length > 0) {
-    result = true;
-  }
-
-  return result;
+  return ($.inArray(pin, boardType.pwmPins) > -1 ? true : false);
 }
 
 function findPinPWMValue(el) {
@@ -152,8 +122,6 @@ function initButtons() {
     socket.emit('setPWMValue', { pin: pin, value: value });
   });
 
-
-  // ANALOG POLLS
   $('.stopPollButton').on('click', function() {
     stopPoll(findPinNum($(this)));
   });
@@ -282,11 +250,36 @@ function initSocket() {
       textarea.animate({scrollTop:textarea[0].scrollHeight - textarea.height()},10);
     }
   });
+
+  socket.on('errorMet', function(err) {
+    alert('ERROR: ' + err);
+  });
+
+  socket.on('setBoard', function(newType) {
+    boardType = newType;
+
+    var scope = angular.element($(document.body)).scope();
+    scope.$apply(function() {
+      scope.boardType = boardType;
+    });
+
+    initButtons();
+  });
 }
 
 
 $(document).ready(function() {
   initButtons();
   initSocket();
+});
+
+
+// ANGULAR
+var app = angular.module('mainApp', ['ngRoute']);
+app.controller('mainController', function($scope) {
+  // Expose to $scope
+  $scope.boardType = boardType;
+  $scope.isPWMPin = isPWMPin;
+
 });
 

@@ -15,34 +15,27 @@
   <body ng-controller="mainController">
     <header>
       <h1><a href="https://github.com/richard92m/web-arduino">web-arduino</a></h1>
-      <div id="boardSelection">
-        <select id="boardType">
-          <option ng-repeat="(key, val) in boardTypes" value="{{key}}">{{val.name}}</option>
-        </select>
-        <button ng-click="boardChanged()">change</button>
-      </div>
     </header>
     <main>
       <div id="digitalPins" class="pinSet">
-        <div ng-repeat="pin in board.digitalPins" class="pin digital">
+        <div ng-repeat="pin in boardType.digitalPins" class="pin digital">
           <meta name="pinNum" content="{{pin}}">
           <h3>[{{pin}}]</h3>
           <div class="controls">
             <p class="button modeToggleButton out">out</p>
-            <p class="button valueToggleButton low">low</p><span ng-if="isPWM(pin)" class="pwm">
+            <p class="button valueToggleButton low">low</p><span ng-if="isPWMPin(pin)" class="pwm">
               <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span>
           </div>
         </div>
         <div class="clear"></div>
       </div>
       <div id="analogPins" class="pinSet">
-        <div ng-repeat="pin in board.analogPins" class="pin analog">
+        <div ng-repeat="pin in boardType.analogPins" class="pin analog">
           <meta name="pinNum" content="{{pin}}">
-          <h3>[A{{pin-board.digitalPins.length}}]</h3>
+          <h3>[A{{pin - boardType.digitalPins.length}}]</h3>
           <div class="controls">
             <p class="button modeToggleButton analog">analog</p>
             <p class="button valueToggleButton analog">0</p>
-            <!--button.queryStateButton Query-->
             <textarea class="analogData"></textarea>
             <input type="text" class="pollValue">
             <button class="button setPollButton">Poll (ms)</button>

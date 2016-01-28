@@ -1,7 +1,9 @@
 var app = require('http').createServer(handler),
   io = require('socket.io').listen(app),
   fs = require('fs'),
-  five = require('johnny-five');
+  five = require('johnny-five'),
+  boardTypes = require('./boardTypes.json'),
+  errors = require('./errors.json');
 
 var socket = {};
 
@@ -14,96 +16,102 @@ var board = new five.Board();
   port: '/dev/tty.ARDUINO-DevB'
 });*/
 
-var pins = [];
-var digitalPinCount = 14;
-var analogPinCount = 6;
-
-function initDigitalPins(n) {
-  for (var i = 0; i < n; i++) {
-    pins.push(new five.Pin(i));
-    pins[i].low();
+function initDigitalPins(digitalPins) {
+  for (var i = 0; i < digitalPins.length; i++) {
+    setPinToDigitalOutput(digitalPins[i]);
   }
 }
 
-// Ensure initDigitalPins() is called first
-function initAnalogPins(n) {
-  var digitalPinCount = pins.length;
-
-  for (var i = 0; i < n; i++) {
-    pins.push(new five.Pin(i + digitalPinCount));
-    pins[i + digitalPinCount].mode = five.Pin.ANALOG;
+function initAnalogPins(analogPins) {
+  for (var i = 0; i < analogPins.length; i++) {
+    setPinToAnalog(analogPins[i]);
   }
 }
 
-function initBoard(data) {
-  pins = [];
-
-  initDigitalPins(data.digitalPinCount);
-  initAnalogPins(data.analogPinCount);
+function initBoard(boardType) {
+  initDigitalPins(boardType.digitalPins);
+  initAnalogPins(boardType.analogPins);
 }
 
-board.on('ready', function() {
-  // Initialize board as uno
-  initBoard({ digitalPinCount: 14, analogPinCount: 6 });
-});
+function getBoardType(b) {
+  var t = null;
+
+  for (var possibleTypeKey in boardTypes) {
+    var totalPins = boardTypes[possibleTypeKey].digitalPins.length + boardTypes[possibleTypeKey].analogPins.length;
+
+    if (board.pins.length === totalPins) {
+      t = boardTypes[possibleTypeKey];
+      break;
+    }
+  }
+
+  return t;
+}
 
 
 // QUERIES
 function sendState(pin) {
-  pins[pin].query(function(state) {
-    socket.emit('queriedState', { pin: pin, mode: pins[pin].mode, value: state.value });
-  });
+  socket.emit('queriedState', { pin: pin, mode: board.pins[pin].mode, value: board.pins[pin].value });
+}
+
+// err: { code:int, msg:string }
+function sendError(err) {
+  socket.emit('errorMet', err);
 }
 
 
 // DIGITAL PINS
-function setPinToInput(pin) {
-  pins[pin] = new five.Pin({
-    pin: pin,
-    type: 'digital',
-    mode: 0
-  });
-
-  pins[pin].on('high', function() {
-    sendState(this.pin);
-  });
-
-  pins[pin].on('low', function() {
-    sendState(this.pin);
+function setPinToDigitalInput(pin) {
+  board.pinMode(pin, five.Pin.INPUT);
+  board.digitalRead(pin, function(value) {
+    sendState(pin);
   });
 }
 
-function setPinToOutput(pin) {
-  pins[pin] = new five.Pin(pin);
+function setPinToDigitalOutput(pin) {
+  board.pinMode(pin, five.Pin.OUTPUT);
+  board.digitalWrite(pin, 0);
+}
+
+function setPinToAnalog(pin) {
+  board.pinMode(pin, five.Pin.ANALOG);
+}
+
+function setPinToPWM(pin) {
+  board.pinMode(pin, five.Pin.PWM);
+  board.analogWrite(pin, 0);
 }
 
 function toggleDigitalMode(pin) {
-  if (pins[pin].mode === five.Pin.INPUT) {
-    setPinToOutput(pin);
+  if (board.pins[pin].mode === five.Pin.INPUT) {
+    setPinToDigitalOutput(pin);
   } else {
-    setPinToInput(pin);
+    setPinToDigitalInput(pin);
   }
 
   sendState(pin);
 }
 
 function toggleDigitalValue(pin) {
-  pins[pin].query(function(state) {
-    pins[pin][ state.value ? 'low' : 'high' ]();
+  var newValue = 0;
 
-    sendState(pin);
-  });
+  if (board.pins[pin].value === 0) {
+    newValue = 1;
+  }
+
+  board.digitalWrite(pin, newValue);
+  sendState(pin);
 }
 
 
 // PWM PINS
 function togglePWMMode(pin) {
-  if (pins[pin].mode === five.Pin.PWM) {
-    setPinToInput(pin);
-  } else if (pins[pin].mode === five.Pin.INPUT) {
-    setPinToOutput(pin);
+  if (board.pins[pin].mode === five.Pin.PWM) {
+    setPinToDigitalInput(pin);
+  } else if (board.pins[pin].mode === five.Pin.INPUT) {
+    setPinToDigitalOutput(pin);
   } else {
-    pins[pin].mode = five.Pin.PWM;
+    setPinToPWM(pin);
   }
 
   sendState(pin);
@@ -118,37 +126,48 @@ function setPWMValue(data) {
 
 // ANALOG PINS
 function toggleAnalogMode(pin) {
-  if (pins[pin].mode === five.Pin.ANALOG) {
-    pins[pin].mode = five.Pin.OUTPUT;
+  if (board.pins[pin].mode === five.Pin.ANALOG) {
+    setPinToDigitalOutput(pin);
   } else {
-    pins[pin].mode = five.Pin.ANALOG;
+    setPinToAnalog(pin);
   }
 
   sendState(pin);
 }
 
+board.on('ready', function() {
+  var t = getBoardType(this);
+
+  if (t === null) {
+    console.log(errors.UNSUPPORTED_BOARD);
+    process.exit(1);
+  }
+
+  initBoard(t);
+});
+
+function sendBoardType() {
+  socket.emit('setBoard', getBoardType(board));
+}
 
 // SOCKET CONTROLLER
 io.sockets.on('connection', function (s) {
   socket = s;
 
   if (board.isReady){
+    sendBoardType();
 
     socket.on('initBoard', initBoard);
+    socket.on('getBoardType', sendBoardType);
 
-    // QUERIES
     socket.on('queryState', sendState);
 
-    // DIGITAL PINS
     socket.on('toggleDigitalMode', toggleDigitalMode);
-    socket.on('toggleDigitalValue', toggleDigitalValue);
-
-    // PWM PINS
-    socket.on('togglePWMMode', togglePWMMode);
-    socket.on('setPWMValue', setPWMValue);
-
-    // ANALOG PINS
     socket.on('toggleAnalogMode', toggleAnalogMode);
+    socket.on('togglePWMMode', togglePWMMode);
+
+    socket.on('toggleDigitalValue', toggleDigitalValue);
+    socket.on('setPWMValue', setPWMValue);
 
   }
 });

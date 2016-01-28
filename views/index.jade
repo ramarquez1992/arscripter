@@ -17,14 +17,9 @@ html(ng-app='mainApp')
       h1
         a(href='https://github.com/richard92m/web-arduino') web-arduino
 
-      div#boardSelection
-        select#boardType
-          option(ng-repeat='(key, val) in boardTypes', value='{{key}}') {{val.name}}
-        button(ng-click='boardChanged()') change
-
     main
       div#digitalPins.pinSet
-        div.pin.digital(ng-repeat='pin in board.digitalPins')
+        div.pin.digital(ng-repeat='pin in boardType.digitalPins')
           meta(name='pinNum', content="{{pin}}")
           h3 [{{pin}}]
 
@@ -32,20 +27,19 @@ html(ng-app='mainApp')
             p.button.modeToggleButton.out out
             p.button.valueToggleButton.low low
 
-            span.pwm(ng-if='isPWM(pin)')
+            span.pwm(ng-if='isPWMPin(pin)')
               input.button.pwmSlider(type='range', min='0', max='255', step='1', value='0', disabled)
 
         .clear
 
       div#analogPins.pinSet
-        div.pin.analog(ng-repeat='pin in board.analogPins')
+        div.pin.analog(ng-repeat='pin in boardType.analogPins')
           meta(name='pinNum', content="{{pin}}")
-          h3 [A{{pin-board.digitalPins.length}}]
+          h3 [A{{pin - boardType.digitalPins.length}}]
 
           div.controls
             p.button.modeToggleButton.analog analog
             p.button.valueToggleButton.analog 0
-            //button.queryStateButton Query
             textarea.analogData
             input.pollValue(type='text')
             button.button.setPollButton Poll (ms)
