@@ -95,10 +95,6 @@ function initButtons() {
   $('.button').off('input');
 
 
-  $('.queryStateButton').on('click', function() {
-    socket.emit('queryState', findPinNum($(this)));
-  });
-  
   $('.modeToggleButton').on('click', function() {
     var pinNum = findPinNum($(this));
 
@@ -119,7 +115,8 @@ function initButtons() {
     var pin = findPinNum($(this));
     var value = findPinPWMValue($(this));
 
-    socket.emit('setPWMValue', { pin: pin, value: value });
+    //socket.emit('setPWMValue', { pin: pin, value: value });
+    socket.emit('setPinValue', { pin: pin, value: value });
   });
 
   $('.stopPollButton').on('click', function() {
@@ -134,7 +131,7 @@ function initButtons() {
 
     // Add new poll for pin
     pinPolls[pinNum] = window.setInterval(function() {
-      socket.emit('queryState', pinNum);
+      socket.emit('getPinState', pinNum);
     }, pollValue);
   });
 }
@@ -236,7 +233,7 @@ function setPinValue(pin, value) {
 }
 
 function initSocket() {
-  socket.on('queriedState', function(data) {
+  socket.on('setPinState', function(data) {
     console.log(data);
 
     setPinMode(data.pin, data.mode);

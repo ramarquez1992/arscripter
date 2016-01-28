@@ -1,5 +1,6 @@
 {
   "UNSUPPORTED_BOARD": "The connected board type is unsupported.",
+  "UNSUPPORTED_MODE": "The selected mode is unsupported.",
   "UNDEFINED_ERROR": "An error occurred."
 }
 
