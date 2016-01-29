@@ -1,4 +1,4 @@
-var webServer = require('./webServer.js'),
+var webServer = require('./js/webServer.js'),
   socket,
   five = require('johnny-five'),
   boardTypes = require('./boardTypes.json'),
