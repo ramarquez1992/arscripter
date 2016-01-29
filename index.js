@@ -1,10 +1,11 @@
+// INCLUDES
 var path = require('path'),
   argv = require('minimist')(process.argv.slice(2)),
   five = require('johnny-five'),
   webServer = require('./js/webServer.js'),
   socket = null,
-  boardTypes = require('./boardTypes.json'),
-  errors = require('./errors.json');
+  boardTypes = require('./json/boardTypes.json'),
+  errors = require('./json/errors.json');
 
 
 // PARSE ARGUMENTS

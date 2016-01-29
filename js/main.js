@@ -4,7 +4,7 @@ var socket = io.connect('http://localhost:8080');
 var errors = {};
 $.ajax({
   dataType: 'json',
-  url: '../errors.json',
+  url: '../json/errors.json',
   async: false,
   success: function(data) {
     errors = data;
@@ -14,7 +14,7 @@ $.ajax({
 var boardTypes = {};
 $.ajax({
   dataType: 'json',
-  url: '../boardTypes.json',
+  url: '../json/boardTypes.json',
   async: false,
   success: function(data) {
     boardTypes = data;
