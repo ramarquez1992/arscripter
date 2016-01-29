@@ -181,7 +181,7 @@ function sendError(err) {
 
 // SOCKET CONTROLLER
 webServer.io.sockets.on('connection', function (s) {
-  socket = s;
+  socket = s; // Add socket to global scope
 
   if (board.isReady){
     sendBoardType();

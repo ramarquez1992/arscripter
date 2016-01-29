@@ -1,10 +1,14 @@
+var http = require('http'),
+    io = require('socket.io'),
+    fs = require('fs');
+
 var indexFilename = '/build/index.html';
 var port = 8080;
 
-var fs = require('fs');
-
-var app = require('http').createServer(function(req, res) {
+var app = http.createServer(function(req, res) {
   if (req.url === '/') req.url = indexFilename;
+
+  // Go to root dir before appending requested filename
   req.url = __dirname + '/..' + req.url;
 
   fs.readFile(req.url, function (err, data) {
@@ -18,5 +22,5 @@ var app = require('http').createServer(function(req, res) {
   });
 }).listen(port);
 
-module.exports.io = require('socket.io').listen(app);
+module.exports.io = io.listen(app);
 
