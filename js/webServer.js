@@ -3,7 +3,6 @@ var http = require('http'),
     fs = require('fs');
 
 var indexFilename = '/build/index.html';
-var port = 8080;
 
 var app = http.createServer(function(req, res) {
   if (req.url === '/') req.url = indexFilename;
@@ -20,8 +19,11 @@ var app = http.createServer(function(req, res) {
     res.writeHead(200);
     res.end(data);
   });
-}).listen(port);
+});
+
+module.exports.start = function(port) {
+  app.listen(port);
+};
 
 module.exports.io = io.listen(app);
-module.exports.port = port;
 

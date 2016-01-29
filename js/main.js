@@ -1,7 +1,6 @@
 // INIT
 var socket = io.connect('http://localhost:8080');
 
-
 var errors = {};
 $.ajax({
   dataType: 'json',

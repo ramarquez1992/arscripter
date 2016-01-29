@@ -1,13 +1,37 @@
-var webServer = require('./js/webServer.js'),
-  socket = null,
+var path = require('path'),
+  argv = require('minimist')(process.argv.slice(2)),
   five = require('johnny-five'),
+  webServer = require('./js/webServer.js'),
+  socket = null,
   boardTypes = require('./boardTypes.json'),
   errors = require('./errors.json');
 
 
+// PARSE ARGUMENTS
+var boardPath = null;
+if (argv.hasOwnProperty('b')) {
+  boardPath = argv.b;
+}
+
+var serverPort = 8080;
+// TODO: dynamically set socket in main.js to connect to this user-defined port
+/*if (argv.hasOwnProperty('p')) {
+  serverPort = argv.p;
+}*/
+
+if (argv.hasOwnProperty('h')) {
+  console.log('USAGE: node ' + path.basename(process.argv[1]) + ' [-b <PATH_TO_BOARD>]');
+  process.exit(1);
+}
+
+
+// SERVER INITIALIZATION
+webServer.start(serverPort);
+
+
 // BOARD INITIALIZATION
 var board = new five.Board({
-  //port: '/dev/tty.ARDUINO-DevB', // Force Bluetooth connection
+  port: boardPath,
   repl: false,
   debug: false,
 });
@@ -28,7 +52,7 @@ board.on('ready', function() {
 
   initBoard(t);
 
-  console.log('Board ready! Navigate to http://localhost:' + webServer.port + '  (^C to exit)');
+  console.log('Board ready! Navigate to http://localhost:' + serverPort + '  (^C to exit)');
 });
 
 function getBoardType(b) {
