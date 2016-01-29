@@ -1,18 +1,22 @@
 var webServer = require('./js/webServer.js'),
-  socket,
+  socket = null,
   five = require('johnny-five'),
   boardTypes = require('./boardTypes.json'),
   errors = require('./errors.json');
 
 
 // BOARD INITIALIZATION
-// Find board automatically
-var board = new five.Board();
+var board = new five.Board({
+  //port: '/dev/tty.ARDUINO-DevB', // Force Bluetooth connection
+  repl: false,
+  debug: false,
+});
 
-// Bluetooth connection
-/*var board = new five.Board({
-  port: '/dev/tty.ARDUINO-DevB'
-});*/
+board.on('error', function(err) {
+  if (err.hasOwnProperty('message')) {
+    console.log('\nERROR: ' + err.message);
+  }
+});
 
 board.on('ready', function() {
   var t = getBoardType(this);
@@ -23,6 +27,8 @@ board.on('ready', function() {
   }
 
   initBoard(t);
+
+  console.log('Board ready! Navigate to http://localhost:' + webServer.port + '  (^C to exit)');
 });
 
 function getBoardType(b) {
@@ -48,13 +54,13 @@ function initBoard(boardType) {
 
 function initDigitalPins(digitalPins) {
   for (var i = 0; i < digitalPins.length; i++) {
-    setPinToDigitalOutput(digitalPins[i]);
+    setPinMode({ pin: digitalPins[i], mode: 'output' });
   }
 }
 
 function initAnalogPins(analogPins) {
   for (var i = 0; i < analogPins.length; i++) {
-    setPinToAnalog(analogPins[i]);
+    setPinMode({ pin: analogPins[i], mode: 'analog' });
   }
 }
 
@@ -167,15 +173,18 @@ function toggleAnalogMode(pin) {
 
 // QUERIES
 function sendBoardType() {
-  socket.emit('setBoard', getBoardType(board));
+  if (socket !== null)
+    socket.emit('setBoard', getBoardType(board));
 }
 
 function sendPinState(pin) {
-  socket.emit('setPinState', { pin: pin, mode: board.pins[pin].mode, value: board.pins[pin].value });
+  if (socket !== null)
+    socket.emit('setPinState', { pin: pin, mode: board.pins[pin].mode, value: board.pins[pin].value });
 }
 
 function sendError(err) {
-  socket.emit('errorMet', err);
+  if (socket !== null)
+    socket.emit('errorMet', err);
 }
 
 

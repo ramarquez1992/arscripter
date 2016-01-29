@@ -23,4 +23,5 @@ var app = http.createServer(function(req, res) {
 }).listen(port);
 
 module.exports.io = io.listen(app);
+module.exports.port = port;
 
