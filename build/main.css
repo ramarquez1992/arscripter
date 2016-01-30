@@ -11,7 +11,11 @@ button, textarea {
   font-family: Monaco, "Lucida Console", monospace; }
 
 .button {
-  cursor: pointer; }
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 input:disabled {
   opacity: 0.5; }
