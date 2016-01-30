@@ -32,7 +32,7 @@ $.ajax({
 
 // INIT
 var socket = io.connect('http://localhost:8080');
-var boardType = null;
+var boardType = boardTypes.uno;
 
 $(document).ready(function() {
   initButtons();
@@ -153,8 +153,7 @@ function findPinMode(pin) {
       currentMode = pinModes.PWM;
       break;
     default:
-      // TODO: throw error
-      alert('Found an invalid pin mode (findPinMode())');
+      logError(errors.UNSUPPORTED_PIN_MODE);
   }
 
   return currentMode;

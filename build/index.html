@@ -17,6 +17,16 @@
       <h1><a href="https://github.com/richard92m/web-arduino">web-arduino</a></h1>
     </header>
     <main>
+      <div id="script">
+        <div class="controls">
+          <button class="open">open</button>
+          <button class="save">save</button>
+          <button class="run">run</button>
+          <button class="input">in</button>
+          <button class="output">out</button>
+        </div>
+        <textarea class="text"></textarea>
+      </div>
       <div id="digitalPins" class="pinSet">
         <div ng-repeat="pin in boardType.digitalPins" class="pin digital">
           <meta name="pinNum" content="{{pin}}">

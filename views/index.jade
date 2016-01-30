@@ -18,6 +18,16 @@ html(ng-app='mainApp')
         a(href='https://github.com/richard92m/web-arduino') web-arduino
 
     main
+      div#script
+        div.controls
+          button.open open
+          button.save save
+          button.run run
+          button.input in
+          button.output out
+
+        textarea.text
+
       div#digitalPins.pinSet
         div.pin.digital(ng-repeat='pin in boardType.digitalPins')
           meta(name='pinNum', content="{{pin}}")
