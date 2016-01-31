@@ -82,20 +82,19 @@ main {
   position: fixed;
   top: 0;
   left: 0;
-  width: 20%;
+  width: 200px;
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
   background-color: #ccc;
   color: #000; }
   #script .controls {
-    height: 3%;
     width: 100%;
     padding: 0;
     margin: 0;
     background-color: #777; }
   #script .text {
     width: 95%;
-    height: 95%;
+    height: 80%;
     margin: 0; }
 
 /*# sourceMappingURL=main.css.map */

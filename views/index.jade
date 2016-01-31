@@ -20,9 +20,9 @@ html(ng-app='mainApp')
     main
       div#script
         div.controls
-          button.open open
-          button.save save
-          button.run run
+          input#scriptFileChooser(type='file')
+          a#saveScriptButton(href='#', download='script.wajs') save
+          button#runScriptButton run
           button.input in
           button.output out
 

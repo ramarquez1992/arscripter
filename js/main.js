@@ -35,11 +35,12 @@ var socket = io.connect('http://localhost:8080');
 var boardType = boardTypes.uno;
 
 $(document).ready(function() {
-  initButtons();
+  initPinButtons();
+  initScriptButtons();
   initSocket();
 });
 
-function initButtons() {
+function initPinButtons() {
   // Remove all previous handlers to avoid duplicates
   $('.button').off('click');
   $('.button').off('input');
@@ -196,7 +197,7 @@ function setBoard(type) {
     scope.boardType = boardType;
   });
 
-  initButtons();
+  initPinButtons();
 }
 
 function setPinState(data) {
@@ -372,4 +373,54 @@ function stopPoll(pin) {
     window.clearInterval(pinPolls[pin]);
   }
 }
+
+
+// SCRIPTING
+function initScriptButtons() {
+  $('#scriptFileChooser').on('change', function() {
+    openScript(this.files[0]);
+  });
+
+  $('#saveScriptButton').on('click', function() {
+    saveScript(getScriptContent());
+  });
+
+  $('#runScriptButton').on('click', function() {
+    runScript(getScriptContent());
+  });
+
+}
+
+function getScriptContent() {
+  return $('#script').find('.text').first().val();
+}
+
+function setScriptContent(text) {
+  $('#script').find('.text').first().val(text);
+}
+
+function openScript(file) {
+  var reader = new FileReader();
+
+  reader.addEventListener('load', function(e) {
+    var text = e.target.result;
+    setScriptContent(text);
+  });
+
+  reader.readAsText(file);
+}
+
+function saveScript(text) {
+  var downloadData = 'data:text/plain;charset=utf-8,' + encodeURIComponent(text);
+
+  $('#saveScriptButton').attr({
+    'href': downloadData,
+    'target': '_blank'
+  });
+}
+
+function runScript(text) {
+  alert('running:\n\n' + text);
+}
+
 
