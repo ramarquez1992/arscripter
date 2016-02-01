@@ -32,7 +32,8 @@ $.ajax({
 
 // INIT
 var socket = io.connect('http://localhost:8080');
-var boardType = boardTypes.uno;
+//var boardType = boardTypes.uno;
+var boardType = null;
 
 $(document).ready(function() {
   initPinButtons();
@@ -45,6 +46,8 @@ function initPinButtons() {
   $('.button').off('click');
   $('.button').off('input');
 
+
+  $('#resetBoardButton').on('click', resetBoard);
 
   $('.modeToggleButton').on('click', function() {
     togglePinMode(findPinNum($(this)));
@@ -279,6 +282,18 @@ function setPinUIValue(pin, value) {
 
 
 // SERVER-SIDE SETTERS
+function resetBoard() {
+  socket.emit('resetBoard', boardType);
+
+  resetAnalogValues();
+}
+
+function resetAnalogValues() {
+  /*$('.analogData').each(function() {
+    $(this).val('');
+  });*/
+}
+
 function setPinMode(pin, mode) {
   socket.emit('setPinMode', { pin: pin, mode: mode });
 }

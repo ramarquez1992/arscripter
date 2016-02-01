@@ -13,9 +13,11 @@ html(ng-app='mainApp')
     script(src='/js/main.js')
 
   body(ng-controller='mainController')
+
     header
       h1
         a(href='https://github.com/richard92m/web-arduino') web-arduino
+      button#resetBoardButton reset
 
     main
       div#script

@@ -80,12 +80,14 @@ function initBoard(boardType) {
 function initDigitalPins(digitalPins) {
   for (var i = 0; i < digitalPins.length; i++) {
     setPinMode({ pin: digitalPins[i], mode: five.Pin.OUTPUT });
+    setPinValue({ pin: digitalPins[i], value: 0 });
   }
 }
 
 function initAnalogPins(analogPins) {
   for (var i = 0; i < analogPins.length; i++) {
     setPinMode({ pin: analogPins[i], mode: five.Pin.ANALOG });
+    setPinValue({ pin: analogPins[i], value: 0 });
   }
 }
 
@@ -181,6 +183,7 @@ webServer.io.sockets.on('connection', function (s) {
     socket.on('setPinMode', setPinMode);
     socket.on('setPinValue', setPinValue);
 
+    socket.on('resetBoard', initBoard);
   }
 });
 

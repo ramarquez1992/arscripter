@@ -106,4 +106,9 @@ main {
   #script #outputText {
     background-color: #dfd; }
 
+#resetBoardButton {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
 /*# sourceMappingURL=main.css.map */
