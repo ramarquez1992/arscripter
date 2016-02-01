@@ -430,13 +430,22 @@ function showOutputArea() {
 }
 
 // INPUT
-var ide = null;
+var editor = null;
 function initEditor() {
+  var defaultScript;
+  $.ajax({
+    dataType: 'text',
+    url: '../js/defaultScript.js',
+    async: false,
+    success: function(data) {
+      defaultScript = data;
+    }
+  });
+
   var container = document.getElementById('inputText');
 
-  ide = CodeMirror(container, {
-    // TODO: use a default file
-    value: "function myScript(){return 100;}\n",
+  editor = CodeMirror(container, {
+    value: defaultScript,
     mode:  "javascript",
     lineWrapping: true,
     lineNumbers: true
@@ -444,11 +453,11 @@ function initEditor() {
 }
 
 function getScriptContent() {
-  return ide.getValue();
+  return editor.getValue();
 }
 
 function setScriptContent(text) {
-  ide.setValue(text);
+  editor.setValue(text);
 }
 
 function openScript(file) {
