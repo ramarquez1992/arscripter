@@ -1,5 +1,7 @@
-.clear {
-  clear: both; }
+* {
+  margin: 0;
+  padding: 0;
+  border: 0; }
 
 body {
   background-color: #333;
@@ -19,6 +21,9 @@ button, textarea {
 
 input:disabled {
   opacity: 0.5; }
+
+.clear {
+  clear: both; }
 
 header {
   margin-bottom: 3em; }
@@ -92,9 +97,13 @@ main {
     padding: 0;
     margin: 0;
     background-color: #777; }
-  #script .text {
+  #script #inputText, #script #outputText {
     width: 95%;
     height: 80%;
     margin: 0; }
+  #script #inputText {
+    background-color: #fdd; }
+  #script #outputText {
+    background-color: #dfd; }
 
 /*# sourceMappingURL=main.css.map */

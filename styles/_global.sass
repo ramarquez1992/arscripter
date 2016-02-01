@@ -1,7 +1,11 @@
+// TODO: color variables (primary, secondary, tertiary, quaternary)
+// TODO: split up into different files (e.g. header, scripting, pins, footer)
 $font-stack: Monaco, 'Lucida Console', monospace
 
-.clear
-  clear: both
+*
+  margin: 0
+  padding: 0
+  border: 0
 
 body
   background-color: #333
@@ -21,6 +25,9 @@ button, textarea
 
 input:disabled
   opacity: 0.5
+
+.clear
+  clear: both
 
 header
   margin-bottom: 3em
@@ -106,10 +113,17 @@ main
     margin: 0
     background-color: #777
 
-  .text
+  #inputText, #outputText
     width: 95%
     height: 80%
     margin: 0
+
+  #inputText
+    background-color: #fdd
+
+  #outputText
+    background-color: #dfd
+
 
 
 

@@ -203,11 +203,11 @@ function setBoard(type) {
 function setPinState(data) {
   console.log(data);
 
-  setPinMode(data.pin, data.mode);
-  setPinValue(data.pin, data.value);
+  setPinUIMode(data.pin, data.mode);
+  setPinUIValue(data.pin, data.value);
 }
 
-function setPinMode(pin, mode) {
+function setPinUIMode(pin, mode) {
   if (isPWMPin(pin)) findByPinNum(pin).find('.pwmSlider').first().prop('disabled', true);
 
   var el = findByPinNum(pin).find('.modeToggleButton').first();
@@ -250,7 +250,7 @@ function setPinMode(pin, mode) {
   el.text(newText);
 }
 
-function setPinValue(pin, value) {
+function setPinUIValue(pin, value) {
   var el = findByPinNum(pin).find('.valueToggleButton').first();
 
   el.toggleClass('low', false);
@@ -279,6 +279,14 @@ function setPinValue(pin, value) {
 
 
 // SERVER-SIDE SETTERS
+function setPinMode(pin, mode) {
+  socket.emit('setPinMode', { pin: pin, mode: mode });
+}
+
+function setPinValue(pin, value) {
+  socket.emit('setPinValue', { pin: pin, value: value });
+}
+
 function togglePinMode(pin) {
   if (isAnalogPin(pin)) {
     toggleAnalogMode(pin);
@@ -299,7 +307,7 @@ function toggleDigitalMode(pin) {
     newMode = pinModes.INPUT;
   }
 
-  socket.emit('setPinMode', { pin: pin, mode: newMode });
+  setPinMode(pin, newMode);
 }
 
 function toggleAnalogMode(pin) {
@@ -312,7 +320,7 @@ function toggleAnalogMode(pin) {
     newMode = pinModes.ANALOG;
   }
 
-  socket.emit('setPinMode', { pin: pin, mode: newMode });
+  setPinMode(pin, newMode);
 }
 
 function togglePWMMode(pin) {
@@ -327,7 +335,7 @@ function togglePWMMode(pin) {
     newMode = pinModes.PWM;
   }
 
-  socket.emit('setPinMode', { pin: pin, mode: newMode });
+  setPinMode(pin, newMode);
 }
 
 function toggleDigitalValue(pin) {
@@ -340,12 +348,12 @@ function toggleDigitalValue(pin) {
     newValue = 0;
   }
 
-  socket.emit('setPinValue', { pin: pin, value: newValue });
+  setPinValue(pin, newValue);
 }
 
 function setPWMValue(pin) {
   var newValue = findPWMSliderValue(pin);
-  socket.emit('setPinValue', { pin: pin, value: newValue });
+  setPinValue(pin, newValue);
 }
 
 
@@ -389,14 +397,29 @@ function initScriptButtons() {
     runScript(getScriptContent());
   });
 
+  $('#stopScriptButton').on('click', stopScript);
+
+  $('#inputButton').on('click', showInputArea);
+  $('#outputButton').on('click', showOutputArea);
 }
 
+function showInputArea() {
+  $('#script').find('#inputText').first().css('display', 'block');
+  $('#script').find('#outputText').first().css('display', 'none');
+}
+
+function showOutputArea() {
+  $('#script').find('#inputText').first().css('display', 'none');
+  $('#script').find('#outputText').first().css('display', 'block');
+}
+
+// EDITING
 function getScriptContent() {
-  return $('#script').find('.text').first().val();
+  return $('#script').find('#inputText').first().val();
 }
 
 function setScriptContent(text) {
-  $('#script').find('.text').first().val(text);
+  $('#script').find('#inputText').first().val(text);
 }
 
 function openScript(file) {
@@ -419,8 +442,39 @@ function saveScript(text) {
   });
 }
 
+// RUNNING
+var runningScriptId = null;
+
 function runScript(text) {
-  alert('running:\n\n' + text);
+  stopScript();
+  eval(text);
+
+  setScriptOutput('');
+  showOutputArea();
 }
 
+function stopScript() {
+  if (runningScriptId !== null) {
+    clearInterval(runningScriptId);
+  }
+}
+
+function loop(interval, cb) {
+  runningScriptId = setInterval(cb, interval);
+}
+
+// OUTPUT
+function getScriptOutput() {
+  var textarea = $('#script').find('#outputText').first();
+  return textarea.val();
+}
+
+function setScriptOutput(text) {
+  var textarea = $('#script').find('#outputText').first();
+  textarea.val(text);
+}
+
+function display(data) {
+  setScriptOutput(getScriptOutput() + data);
+}
 

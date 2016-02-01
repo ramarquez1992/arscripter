@@ -21,10 +21,12 @@
         <div class="controls">
           <input id="scriptFileChooser" type="file"><a id="saveScriptButton" href="#" download="script.wajs">save</a>
           <button id="runScriptButton">run</button>
-          <button class="input">in</button>
-          <button class="output">out</button>
+          <button id="stopScriptButton">stop</button>
+          <button id="inputButton">in</button>
+          <button id="outputButton">out</button>
         </div>
-        <textarea class="text"></textarea>
+        <textarea id="inputText"></textarea>
+        <textarea id="outputText" style="display:none;"></textarea>
       </div>
       <div id="digitalPins" class="pinSet">
         <div ng-repeat="pin in boardType.digitalPins" class="pin digital">

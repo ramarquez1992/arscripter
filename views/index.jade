@@ -23,10 +23,12 @@ html(ng-app='mainApp')
           input#scriptFileChooser(type='file')
           a#saveScriptButton(href='#', download='script.wajs') save
           button#runScriptButton run
-          button.input in
-          button.output out
+          button#stopScriptButton stop
+          button#inputButton in
+          button#outputButton out
 
-        textarea.text
+        textarea#inputText
+        textarea#outputText(style='display:none;')
 
       div#digitalPins.pinSet
         div.pin.digital(ng-repeat='pin in boardType.digitalPins')
