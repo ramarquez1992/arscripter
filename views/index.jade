@@ -19,6 +19,10 @@ html(ng-app='mainApp')
     script(src='/socket.io/socket.io.js')
     script(src='/lib/jquery.peity.js')
     script(src='/js/main.js')
+    script(src='/js/uiGetters.js')
+    script(src='/js/uiSetters.js')
+    script(src='/js/serverSetters.js')
+    script(src='/js/scripting.js')
 
   body(ng-controller='mainController')
 
@@ -64,9 +68,6 @@ html(ng-app='mainApp')
               p.button.modeToggleButton.analog analog
               p.button.valueToggleButton.analog 0
               span.analogDataChart 0
-              //input.pollValue(type='text')
-              //button.button.setPollButton Poll (ms)
-              //button.button.stopPollButton Stop
 
           .clear
 
