@@ -1,6 +1,9 @@
-// TODO: color variables (primary, secondary, tertiary, quaternary)
-// TODO: split up into different files (e.g. header, scripting, pins, footer)
-$font-stack: Monaco, 'Lucida Console', monospace
+$fontStack: Monaco, 'Lucida Console', monospace
+
+$primaryColor: #f00
+$secondaryColor: #0f0
+$tertiaryColor: #00f
+$quaternaryColor: #000
 
 *
   margin: 0
@@ -10,11 +13,11 @@ $font-stack: Monaco, 'Lucida Console', monospace
 body
   background-color: #333
   color: #0ff
-  font-family: $font-stack
+  font-family: $fontStack
   font-size: medium
 
 button, textarea
-  font-family: $font-stack
+  font-family: $fontStack
 
 .button
   cursor: pointer
@@ -29,107 +32,8 @@ input:disabled
 .clear
   clear: both
 
-header
-  height: 10%
-  margin-bottom: 3em
-
-  h1 a
-    color: #0c0
-    text-decoration: none
-
 #pins, #script
   position: fixed
   top: 7%
   height: 93%
-
-#pins
-  right: 0
-  width: 50%
-  overflow: scroll
-  background-color: #eee
-  color: #000
-
-  .pinSet
-    clear: both
-
-  .pin
-    float: left
-    background-color: #666
-    border: 1px solid #0a0
-
-    &.digital
-      width: 13%
-      height: 10em
-
-
-    &.analog
-      width: 15.4%
-      height: 15em
-
-      textarea
-        width: 95%
-        height: 5em
-
-    h3
-      padding: .1em
-      margin: 0
-      background-color: #000
-      color: #bbb
-      font-size: .8em
-
-    .controls
-      margin: .2em
-
-    input
-      width: 95%
-
-    .modeToggleButton
-      text-transform: uppercase
-    .out
-      color: #f00
-    .in
-      color: #0f0
-    .analog
-      color: #fff
-    .pwm
-      color: #00f
-
-    .valueToggleButton
-      text-transform: uppercase
-    .low
-      color: #f00
-    .high
-      color: #0f0
-    .numValue
-      color: #fff
-
-#script
-  left: 0
-  width: 50%
-  overflow: hidden
-  background-color: #ccc
-  color: #000
-
-  .controls
-    width: 100%
-    height: 5%
-    background-color: #777
-
-  #inputText, #outputText
-    width: 100%
-    height: 95%
-
-  #inputText
-    background-color: #fdd
-
-  #outputText
-    background-color: #dfd
-
-.CodeMirror
-  height: 100% !important
-
-#resetBoardButton
-  position: absolute
-  top: 0
-  right: 0
 

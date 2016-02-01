@@ -25,6 +25,11 @@ input:disabled {
 .clear {
   clear: both; }
 
+#pins, #script {
+  position: fixed;
+  top: 7%;
+  height: 93%; }
+
 header {
   height: 10%;
   margin-bottom: 3em; }
@@ -32,10 +37,10 @@ header {
     color: #0c0;
     text-decoration: none; }
 
-#pins, #script {
-  position: fixed;
-  top: 7%;
-  height: 93%; }
+#resetBoardButton {
+  position: absolute;
+  top: 0;
+  right: 0; }
 
 #pins {
   right: 0;
@@ -107,10 +112,5 @@ header {
 
 .CodeMirror {
   height: 100% !important; }
-
-#resetBoardButton {
-  position: absolute;
-  top: 0;
-  right: 0; }
 
 /*# sourceMappingURL=main.css.map */
