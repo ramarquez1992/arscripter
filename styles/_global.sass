@@ -30,79 +30,82 @@ input:disabled
   clear: both
 
 header
+  height: 10%
   margin-bottom: 3em
 
   h1 a
     color: #0c0
     text-decoration: none
 
-main
-  width: 1000px
-  margin: auto
+#pins, #script
+  position: fixed
+  top: 7%
+  height: 93%
 
-.pinSet
-  clear: both
-  margin-bottom: 2em
+#pins
+  right: 0
+  width: 50%
+  overflow: scroll
+  background-color: #eee
+  color: #000
 
-.pin
-  float: left
-  margin-right: 1%
-  margin-bottom: 1%
-  background-color: #666
-  border: 1px solid #0a0
+  .pinSet
+    clear: both
 
-  &.digital
-    width: 13%
-    height: 10em
+  .pin
+    float: left
+    background-color: #666
+    border: 1px solid #0a0
+
+    &.digital
+      width: 13%
+      height: 10em
 
 
-  &.analog
-    width: 15.4%
-    height: 15em
+    &.analog
+      width: 15.4%
+      height: 15em
 
-    textarea
+      textarea
+        width: 95%
+        height: 5em
+
+    h3
+      padding: .1em
+      margin: 0
+      background-color: #000
+      color: #bbb
+      font-size: .8em
+
+    .controls
+      margin: .2em
+
+    input
       width: 95%
-      height: 5em
 
-  h3
-    padding: .1em
-    margin: 0
-    background-color: #000
-    color: #bbb
-    font-size: .8em
+    .modeToggleButton
+      text-transform: uppercase
+    .out
+      color: #f00
+    .in
+      color: #0f0
+    .analog
+      color: #fff
+    .pwm
+      color: #00f
 
-  .controls
-    margin: .2em
-
-  input
-    width: 95%
-
-  .modeToggleButton
-    text-transform: uppercase
-  .out
-    color: #f00
-  .in
-    color: #0f0
-  .analog
-    color: #fff
-  .pwm
-    color: #00f
-
-  .valueToggleButton
-    text-transform: uppercase
-  .low
-    color: #f00
-  .high
-    color: #0f0
-  .numValue
-    color: #fff
+    .valueToggleButton
+      text-transform: uppercase
+    .low
+      color: #f00
+    .high
+      color: #0f0
+    .numValue
+      color: #fff
 
 #script
-  position: fixed
-  top: 0
   left: 0
-  width: 400px
-  height: 100%
+  width: 50%
   overflow: hidden
   background-color: #ccc
   color: #000

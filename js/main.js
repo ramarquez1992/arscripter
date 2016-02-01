@@ -71,6 +71,12 @@ function initPinButtons() {
   });
 }
 
+function initAnalogCharts() {
+  $('.analogDataChart').each(function() {
+    $(this).peity('line', { width: 100 });
+  });
+}
+
 function initSocket() {
   socket.on('setBoard', setBoard);
   socket.on('setPinState', setPinState);
@@ -202,6 +208,7 @@ function setBoard(type) {
   });
 
   initPinButtons();
+  initAnalogCharts();
 }
 
 function setPinState(data) {
@@ -255,44 +262,60 @@ function setPinUIMode(pin, mode) {
 }
 
 function setPinUIValue(pin, value) {
-  var el = findByPinNum(pin).find('.valueToggleButton').first();
+  var el = findByPinNum(pin);
+  var button = el.find('.valueToggleButton').first();
 
-  el.toggleClass('low', false);
-  el.toggleClass('high', false);
-  el.toggleClass('numValue', false);
+  button.toggleClass('low', false);
+  button.toggleClass('high', false);
+  button.toggleClass('numValue', false);
 
   if (value === 0) {
-    el.toggleClass('low', true);
-    el.text('low');
+    button.toggleClass('low', true);
+    button.text('low');
   } else if (value === 1) {
-    el.toggleClass('high', true);
-    el.text('high');
+    button.toggleClass('high', true);
+    button.text('high');
   } else {
-    el.toggleClass('numValue', true);
-    el.text(value);
+    button.toggleClass('numValue', true);
+    button.text(value);
   }
 
   // Add analog queries to textarea
-  el = findByPinNum(pin);
   if (el.hasClass('analog')) {
-    var textarea = el.find('textarea').first();
-    textarea.append(value + '\r');
-    textarea.animate({ scrollTop:textarea[0].scrollHeight - textarea.height() },10);
+    updateAnalogChart(pin, value);
   }
 }
 
+function updateAnalogChart(pin, value) {
+  var el = findByPinNum(pin);
+  var analogDataChart = el.find('.analogDataChart').first();
+
+  var oldValues = analogDataChart.text().split(',');
+
+  var maxValueCount = 50;
+  if (oldValues.length > maxValueCount) {
+    oldValues.shift();
+  }
+
+  oldValues.push(value);
+  var newValues = oldValues.join(',');
+
+  analogDataChart.text(newValues);
+  analogDataChart.change();
+}
+
+function resetAnalogValues() {
+  $('.analogDataChart').each(function() {
+    $(this).text('0');
+    $(this).change();
+  });
+}
 
 // SERVER-SIDE SETTERS
 function resetBoard() {
   socket.emit('resetBoard', boardType);
 
   resetAnalogValues();
-}
-
-function resetAnalogValues() {
-  /*$('.analogData').each(function() {
-    $(this).val('');
-  });*/
 }
 
 function setPinMode(pin, mode) {
