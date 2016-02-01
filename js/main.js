@@ -39,6 +39,7 @@ $(document).ready(function() {
   initPinButtons();
   initScriptButtons();
   initSocket();
+  initEditor();
 });
 
 function initPinButtons() {
@@ -428,13 +429,26 @@ function showOutputArea() {
   $('#script').find('#outputText').first().css('display', 'block');
 }
 
-// EDITING
+// INPUT
+var ide = null;
+function initEditor() {
+  var container = document.getElementById('inputText');
+
+  ide = CodeMirror(container, {
+    // TODO: use a default file
+    value: "function myScript(){return 100;}\n",
+    mode:  "javascript",
+    lineWrapping: true,
+    lineNumbers: true
+  });
+}
+
 function getScriptContent() {
-  return $('#script').find('#inputText').first().val();
+  return ide.getValue();
 }
 
 function setScriptContent(text) {
-  $('#script').find('#inputText').first().val(text);
+  ide.setValue(text);
 }
 
 function openScript(file) {
@@ -457,12 +471,23 @@ function saveScript(text) {
   });
 }
 
+// OUTPUT
+function getScriptOutput() {
+  var textarea = $('#script').find('#outputText').first();
+  return textarea.val();
+}
+
+function setScriptOutput(text) {
+  var textarea = $('#script').find('#outputText').first();
+  textarea.val(text);
+}
+
 // RUNNING
 var runningScriptId = null;
 
 function runScript(text) {
   stopScript();
-  eval(text);
+  eval(text); // jshint ignore:line
 
   setScriptOutput('');
   showOutputArea();
@@ -474,19 +499,9 @@ function stopScript() {
   }
 }
 
+// USER FUNCTIONS
 function loop(interval, cb) {
   runningScriptId = setInterval(cb, interval);
-}
-
-// OUTPUT
-function getScriptOutput() {
-  var textarea = $('#script').find('#outputText').first();
-  return textarea.val();
-}
-
-function setScriptOutput(text) {
-  var textarea = $('#script').find('#outputText').first();
-  textarea.val(text);
 }
 
 function display(data) {

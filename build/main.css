@@ -87,24 +87,25 @@ main {
   position: fixed;
   top: 0;
   left: 0;
-  width: 200px;
+  width: 400px;
   height: 100%;
   overflow: hidden;
   background-color: #ccc;
   color: #000; }
   #script .controls {
     width: 100%;
-    padding: 0;
-    margin: 0;
+    height: 5%;
     background-color: #777; }
   #script #inputText, #script #outputText {
-    width: 95%;
-    height: 80%;
-    margin: 0; }
+    width: 100%;
+    height: 95%; }
   #script #inputText {
     background-color: #fdd; }
   #script #outputText {
     background-color: #dfd; }
+
+.CodeMirror {
+  height: 100% !important; }
 
 #resetBoardButton {
   position: absolute;
