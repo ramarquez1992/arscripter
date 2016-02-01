@@ -6,13 +6,14 @@
     <title>web-arduino</title>
     <link rel="stylesheet" href="/build/main.css">
     <link rel="apple-touch-icon" href="/assets/favicon.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/lib/codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="/lib/codemirror/lib/codemirror.css">
+    <script src="/lib/codemirror/mode/javascript/javascript.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/codemirror/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="/js/codemirror/lib/codemirror.css">
-    <script src="/js/codemirror/mode/javascript/javascript.js"></script>
+    <script src="/lib/jquery.peity.js"></script>
     <script src="/js/main.js"></script>
   </head>
   <body ng-controller="mainController">
@@ -32,32 +33,33 @@
         <div id="inputText"></div>
         <textarea id="outputText" style="display:none;"></textarea>
       </div>
-      <div id="digitalPins" class="pinSet">
-        <div ng-repeat="pin in boardType.digitalPins" class="pin digital">
-          <meta name="pinNum" content="{{pin}}">
-          <h3>[{{pin}}]</h3>
-          <div class="controls">
-            <p class="button modeToggleButton out">out</p>
-            <p class="button valueToggleButton low">low</p><span ng-if="isPWMPin(pin)" class="pwm">
-              <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span>
+      <div id="pins">
+        <div id="digitalPins" class="pinSet">
+          <div ng-repeat="pin in boardType.digitalPins" class="pin digital">
+            <meta name="pinNum" content="{{pin}}">
+            <h3>[{{pin}}]</h3>
+            <div class="controls">
+              <p class="button modeToggleButton out">out</p>
+              <p class="button valueToggleButton low">low</p><span ng-if="isPWMPin(pin)" class="pwm">
+                <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span>
+            </div>
           </div>
+          <div class="clear"></div>
         </div>
-        <div class="clear"></div>
-      </div>
-      <div id="analogPins" class="pinSet">
-        <div ng-repeat="pin in boardType.analogPins" class="pin analog">
-          <meta name="pinNum" content="{{pin}}">
-          <h3>[A{{pin - boardType.digitalPins.length}}]</h3>
-          <div class="controls">
-            <p class="button modeToggleButton analog">analog</p>
-            <p class="button valueToggleButton analog">0</p>
-            <textarea class="analogData"></textarea>
-            <input type="text" class="pollValue">
-            <button class="button setPollButton">Poll (ms)</button>
-            <button class="button stopPollButton">Stop</button>
+        <div id="analogPins" class="pinSet">
+          <div ng-repeat="pin in boardType.analogPins" class="pin analog">
+            <meta name="pinNum" content="{{pin}}">
+            <h3>[A{{pin - boardType.digitalPins.length}}]</h3>
+            <div class="controls">
+              <p class="button modeToggleButton analog">analog</p>
+              <p class="button valueToggleButton analog">0</p><span class="analogDataChart">0</span>
+              <!--input.pollValue(type='text')-->
+              <!--button.button.setPollButton Poll (ms)-->
+              <!--button.button.stopPollButton Stop-->
+            </div>
           </div>
+          <div class="clear"></div>
         </div>
-        <div class="clear"></div>
       </div>
     </main>
   </body>

@@ -32,13 +32,11 @@ $.ajax({
 
 // INIT
 var socket = io.connect('http://localhost:8080');
-//var boardType = boardTypes.uno;
 var boardType = null;
 
 $(document).ready(function() {
-  initPinButtons();
-  initScriptButtons();
   initSocket();
+  initScriptButtons();
   initEditor();
 });
 
@@ -62,18 +60,24 @@ function initPinButtons() {
     setPWMValue(findPinNum($(this)));
   });
 
-  $('.stopPollButton').on('click', function() {
+  /*$('.stopPollButton').on('click', function() {
     stopPoll(findPinNum($(this)));
   });
 
   $('.setPollButton').on('click', function() {
     setPoll(findPinNum($(this)));
-  });
+  });*/
+}
+
+function initAnalogPolls(interval) {
+  for (var pin in boardType.analogPins) {
+    setPoll(boardType.analogPins[pin], interval);
+  }
 }
 
 function initAnalogCharts() {
   $('.analogDataChart').each(function() {
-    $(this).peity('line', { width: 100 });
+    $(this).peity('line', { width: 80 });
   });
 }
 
@@ -209,6 +213,7 @@ function setBoard(type) {
 
   initPinButtons();
   initAnalogCharts();
+  initAnalogPolls(250);
 }
 
 function setPinState(data) {
@@ -399,20 +404,12 @@ function setPWMValue(pin) {
 // ANALOG POLLS
 var pinPolls = {};
 
-function findPollValue(pin) {
-  var el = findByPinNum(pin);
-  return Number(el.find('.pollValue').first().val());
-}
-
-function setPoll(pin) {
+function setPoll(pin, interval) {
   stopPoll(pin);
-
-  // Add new poll for pin
-  var pollValue = findPollValue(pin);
 
   pinPolls[pin] = window.setInterval(function() {
     socket.emit('getPinState', pin);
-  }, pollValue);
+  }, interval);
 }
 
 function stopPoll(pin) {
