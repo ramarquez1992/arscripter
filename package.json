@@ -1,6 +1,6 @@
 {
   "name": "arscripter",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "A web-based approach to rapid Arduino prototyping",
   "author": {
     "name": "Richard Marquez",
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "johnny-five": "^0.9.19",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "socket.io": "^1.4.5"
   }
 }
