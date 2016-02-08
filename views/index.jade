@@ -28,18 +28,18 @@ html(ng-app='mainApp')
 
     header
       h1
-        a(href='https://github.com/richard92m/web-arduino') web-arduino
-      button#resetBoardButton reset
+        a(href='https://github.com/richard92m/arscripter') arscripter
+      button#resetBoardButton.button Reset Board
 
     main
       div#script
         div.controls
           input#scriptFileChooser(type='file')
-          a#saveScriptButton(href='#', download='script.wajs') save
-          button#runScriptButton run
-          button#stopScriptButton stop
-          button#inputButton in
-          button#outputButton out
+          a#saveScriptButton.button(href='#', download='script.wajs') save
+          button#runScriptButton.button run
+          button#stopScriptButton.button stop
+          button#inputButton.button in
+          button#outputButton.button out
 
         div#inputText
         textarea#outputText(style='display:none;')
@@ -48,25 +48,24 @@ html(ng-app='mainApp')
         div#digitalPins.pinSet
           div.pin.digital(ng-repeat='pin in boardType.digitalPins')
             meta(name='pinNum', content="{{pin}}")
-            h3 [{{pin}}]
+            h3 Pin #: {{pin}}
 
             div.controls
-              p.button.modeToggleButton.out out
-              p.button.valueToggleButton.low low
-
               span.pwm(ng-if='isPWMPin(pin)')
                 input.button.pwmSlider(type='range', min='0', max='255', step='1', value='0', disabled)
+              a.button.modeToggleButton.out out
+              a.button.valueToggleButton.low low
 
           .clear
 
         div#analogPins.pinSet
           div.pin.analog(ng-repeat='pin in boardType.analogPins')
             meta(name='pinNum', content="{{pin}}")
-            h3 [A{{pin - boardType.digitalPins.length}}]
+            h3 Pin #: A{{pin - boardType.digitalPins.length}}
 
             div.controls
-              p.button.modeToggleButton.analog analog
-              p.button.valueToggleButton.analog 0
+              a.button.modeToggleButton.analog analog
+              a.button.valueToggleButton.analog 0
               span.analogDataChart 0
 
           .clear

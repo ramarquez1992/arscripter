@@ -1,23 +1,27 @@
 {
-  "name": "web-arduino",
-  "version": "0.3.5",
+  "name": "arscripter",
+  "version": "0.4.5",
   "description": "A web-based approach to rapid Arduino prototyping",
   "author": {
     "name": "Richard Marquez",
     "email": "richard92m@me.com"
   },
+  "bin": {
+    "arscripter": "index.js"
+  },
   "keywords": [
     "arduino",
     "web",
     "controller",
-    "prototyping"
+    "prototyping",
+    "scripting"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/richard92m/web-arduino.git"
+    "url": "git://github.com/richard92m/arscripter.git"
   },
   "bugs": {
-    "url": "https://github.com/richard92m/web-arduino/issues"
+    "url": "https://github.com/richard92m/arscripter/issues"
   },
   "license": "MIT",
   "devDependencies": {

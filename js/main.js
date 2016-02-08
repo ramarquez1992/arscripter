@@ -43,6 +43,7 @@ $(document).ready(function() {
   initSocket();
   initScriptButtons();
   initEditor();
+  initAnalogCharts(); // Init even when board is never connected
 });
 
 function initSocket() {

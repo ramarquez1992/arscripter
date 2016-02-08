@@ -22,17 +22,17 @@
   </head>
   <body ng-controller="mainController">
     <header>
-      <h1><a href="https://github.com/richard92m/web-arduino">web-arduino</a></h1>
-      <button id="resetBoardButton">reset</button>
+      <h1><a href="https://github.com/richard92m/arscripter">arscripter</a></h1>
+      <button id="resetBoardButton" class="button">Reset Board</button>
     </header>
     <main>
       <div id="script">
         <div class="controls">
-          <input id="scriptFileChooser" type="file"><a id="saveScriptButton" href="#" download="script.wajs">save</a>
-          <button id="runScriptButton">run</button>
-          <button id="stopScriptButton">stop</button>
-          <button id="inputButton">in</button>
-          <button id="outputButton">out</button>
+          <input id="scriptFileChooser" type="file"><a id="saveScriptButton" href="#" download="script.wajs" class="button">save</a>
+          <button id="runScriptButton" class="button">run</button>
+          <button id="stopScriptButton" class="button">stop</button>
+          <button id="inputButton" class="button">in</button>
+          <button id="outputButton" class="button">out</button>
         </div>
         <div id="inputText"></div>
         <textarea id="outputText" style="display:none;"></textarea>
@@ -41,23 +41,17 @@
         <div id="digitalPins" class="pinSet">
           <div ng-repeat="pin in boardType.digitalPins" class="pin digital">
             <meta name="pinNum" content="{{pin}}">
-            <h3>[{{pin}}]</h3>
-            <div class="controls">
-              <p class="button modeToggleButton out">out</p>
-              <p class="button valueToggleButton low">low</p><span ng-if="isPWMPin(pin)" class="pwm">
-                <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span>
-            </div>
+            <h3>Pin #: {{pin}}</h3>
+            <div class="controls"><span ng-if="isPWMPin(pin)" class="pwm">
+                <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span><a class="button modeToggleButton out">out</a><a class="button valueToggleButton low">low</a></div>
           </div>
           <div class="clear"></div>
         </div>
         <div id="analogPins" class="pinSet">
           <div ng-repeat="pin in boardType.analogPins" class="pin analog">
             <meta name="pinNum" content="{{pin}}">
-            <h3>[A{{pin - boardType.digitalPins.length}}]</h3>
-            <div class="controls">
-              <p class="button modeToggleButton analog">analog</p>
-              <p class="button valueToggleButton analog">0</p><span class="analogDataChart">0</span>
-            </div>
+            <h3>Pin #: A{{pin - boardType.digitalPins.length}}</h3>
+            <div class="controls"><a class="button modeToggleButton analog">analog</a><a class="button valueToggleButton analog">0</a><span class="analogDataChart">0</span></div>
           </div>
           <div class="clear"></div>
         </div>

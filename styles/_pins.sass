@@ -2,42 +2,32 @@
   right: 0
   width: 50%
   overflow: scroll
-  background-color: #eee
+  background-color: $tertiaryColor
   color: #000
 
   .pinSet
     clear: both
+    margin-bottom: 1em
 
   .pin
-    float: left
-    background-color: #666
-    border: 1px solid #0a0
-
-    &.digital
-      width: 13%
-      height: 10em
-
-
-    &.analog
-      width: 15.4%
-      height: 15em
-
-      textarea
-        width: 95%
-        height: 5em
+    position: relative
+    height: 2em
+    border-bottom: 1px solid $secondaryColor
 
     h3
-      padding: .1em
-      margin: 0
+      display: inline
       background-color: #000
       color: #bbb
       font-size: .8em
 
     .controls
-      margin: .2em
+      position: absolute
+      top: 0
+      left: 8em
 
     input
-      width: 95%
+      float: right
+      width: 50%
 
     .modeToggleButton
       text-transform: uppercase

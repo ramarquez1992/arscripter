@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // INCLUDES
 var path = require('path'),
   argv = require('minimist')(process.argv.slice(2)),
