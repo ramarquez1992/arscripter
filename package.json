@@ -1,6 +1,6 @@
 {
   "name": "arscripter",
-  "version": "0.4.6",
+  "version": "0.6.5",
   "description": "A web-based approach to rapid Arduino prototyping",
   "author": {
     "name": "Richard Marquez",
