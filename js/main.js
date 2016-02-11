@@ -123,7 +123,7 @@ function initAnalogPolls(interval) {
 
 function initAnalogCharts() {
   $('.analogDataChart').each(function() {
-    $(this).peity('line', { width: 80 });
+    $(this).peity('line', { width: 170 });
   });
 }
 

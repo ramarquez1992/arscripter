@@ -52,10 +52,10 @@ html(ng-app='mainApp')
             h3 Pin #: {{pin}}
 
             div.controls
-              span.pwm(ng-if='isPWMPin(pin)')
-                input.button.pwmSlider(type='range', min='0', max='255', step='1', value='0', disabled)
               a.button.modeToggleButton.out out
               a.button.valueToggleButton.low low
+              span.pwm(ng-if='isPWMPin(pin)')
+                input.button.pwmSlider(type='range', min='0', max='255', step='1', value='0', disabled)
 
           .clear
 

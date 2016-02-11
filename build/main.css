@@ -63,37 +63,41 @@ header {
   #pins .pin {
     position: relative;
     height: 2em;
-    border-bottom: 1px dotted #444; }
+    border-bottom: 1px dotted #aaa; }
     #pins .pin h3 {
       display: inline;
+      margin-left: 1em;
+      padding: 0.1em;
       background-color: #000;
       color: #bbb;
       font-size: 0.8em; }
     #pins .pin .controls {
       position: absolute;
-      top: 0;
+      top: 0.3em;
       left: 8em; }
-    #pins .pin input {
-      float: right;
-      width: 50%; }
-    #pins .pin .modeToggleButton {
-      text-transform: uppercase; }
-    #pins .pin .out {
-      color: #f00; }
-    #pins .pin .in {
-      color: #0f0; }
-    #pins .pin .analog {
-      color: #fff; }
-    #pins .pin .pwm {
-      color: #00f; }
-    #pins .pin .valueToggleButton {
-      text-transform: uppercase; }
-    #pins .pin .low {
-      color: #f00; }
-    #pins .pin .high {
-      color: #0f0; }
-    #pins .pin .numValue {
-      color: #fff; }
+      #pins .pin .controls .modeToggleButton, #pins .pin .controls .valueToggleButton {
+        text-transform: uppercase;
+        display: block;
+        float: left;
+        width: 100px; }
+      #pins .pin .controls .out {
+        color: #f00; }
+      #pins .pin .controls .in {
+        color: #0f0; }
+      #pins .pin .controls .analog {
+        color: #444; }
+      #pins .pin .controls .pwm {
+        color: #444; }
+      #pins .pin .controls .low {
+        color: #f00; }
+      #pins .pin .controls .high {
+        color: #0f0; }
+      #pins .pin .controls .numValue {
+        color: #444; }
+      #pins .pin .controls input {
+        float: left;
+        display: block;
+        width: 100px; }
 
 #script {
   left: 0;

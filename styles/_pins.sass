@@ -13,40 +13,45 @@
   .pin
     position: relative
     height: 2em
-    border-bottom: 1px dotted $secondaryColor
+    border-bottom: 1px dotted $quaternaryColor
 
     h3
       display: inline
+      margin-left: 1em
+      padding: .1em
       background-color: #000
       color: #bbb
       font-size: .8em
 
     .controls
       position: absolute
-      top: 0
+      top: .3em
       left: 8em
 
-    input
-      float: right
-      width: 50%
+      .modeToggleButton, .valueToggleButton
+        text-transform: uppercase
+        display: block
+        float: left
+        width: 100px
 
-    .modeToggleButton
-      text-transform: uppercase
-    .out
-      color: #f00
-    .in
-      color: #0f0
-    .analog
-      color: #fff
-    .pwm
-      color: #00f
+      .out
+        color: #f00
+      .in
+        color: #0f0
+      .analog
+        color: $secondaryColor
+      .pwm
+        color: $secondaryColor
 
-    .valueToggleButton
-      text-transform: uppercase
-    .low
-      color: #f00
-    .high
-      color: #0f0
-    .numValue
-      color: #fff
+      .low
+        color: #f00
+      .high
+        color: #0f0
+      .numValue
+        color: $secondaryColor
+
+      input
+        float: left
+        display: block
+        width: 100px
 

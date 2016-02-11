@@ -43,8 +43,8 @@
           <div ng-repeat="pin in boardType.digitalPins" class="pin digital">
             <meta name="pinNum" content="{{pin}}">
             <h3>Pin #: {{pin}}</h3>
-            <div class="controls"><span ng-if="isPWMPin(pin)" class="pwm">
-                <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span><a class="button modeToggleButton out">out</a><a class="button valueToggleButton low">low</a></div>
+            <div class="controls"><a class="button modeToggleButton out">out</a><a class="button valueToggleButton low">low</a><span ng-if="isPWMPin(pin)" class="pwm">
+                <input type="range" min="0" max="255" step="1" value="0" disabled class="button pwmSlider"></span></div>
           </div>
           <div class="clear"></div>
         </div>
