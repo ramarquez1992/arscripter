@@ -75,3 +75,11 @@ function display(data) {
   setScriptOutput(getScriptOutput() + data);
 }
 
+function getPinValue(pin) {
+  return findPinValue(pin);
+}
+
+function getPinMode(pin) {
+  return findPinMode(pin);
+}
+

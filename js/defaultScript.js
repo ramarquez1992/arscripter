@@ -1,13 +1,12 @@
-function mf(p) {
-  toggleDigitalValue(p);
-}
+var pin = 13;
+setPinMode(pin,1);
 
-loop(1000, function() {
-  mf(6);
+loop(1000, function() {  
+  toggleDigitalValue(pin);
 
-  var date = new Date();
-  var time = date.getTime();
-
-  display('TIME: ' + time + '\n');
-
+  setTimeout(function() {
+  	display('Pin ' + pin + ' value: ' + getPinValue(pin) + '\n');
+  }, 10);
+  
 });
+

@@ -95,8 +95,8 @@ function initEditor() {
 
 function initPinButtons() {
   // Remove all previous handlers to avoid duplicates
-  $('.button').off('click');
-  $('.button').off('input');
+  //$('.button').off('click');
+  //$('.button').off('input');
 
 
   $('#resetBoardButton').on('click', resetBoard);
