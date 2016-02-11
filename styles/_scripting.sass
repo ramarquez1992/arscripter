@@ -11,7 +11,7 @@
     background-color: #777
 
     .button
-      float: right
+      float: left
       margin-top: .8em
       margin-right: .5em
       border: 1px solid $secondaryColor
@@ -19,6 +19,18 @@
       color: $secondaryColor
       font-size: .7em
       padding: .1em .8em
+
+    #scriptFileChooser
+      display: none
+
+    #openScriptButton
+      margin-left: 1em
+
+    #saveScriptButton
+      margin-right: 3em
+
+    #outputButton
+      margin-right: 3em
 
   #inputText, #outputText
     width: 100%
@@ -29,6 +41,7 @@
 
   #outputText
     background-color: #dfd
+    padding: 1em
 
 .CodeMirror
   height: 100% !important

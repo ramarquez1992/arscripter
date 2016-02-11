@@ -35,11 +35,12 @@ html(ng-app='mainApp')
       div#script
         div.controls
           input#scriptFileChooser(type='file')
-          a#saveScriptButton.button(href='#', download='script.wajs') save
-          button#runScriptButton.button run
-          button#stopScriptButton.button stop
-          button#inputButton.button in
-          button#outputButton.button out
+          label#openScriptButton.button(for='scriptFileChooser') Open
+          a#saveScriptButton.button(href='#', download='script.wajs') Save
+          button#inputButton.button Input
+          button#outputButton.button Output
+          button#runScriptButton.button Run
+          button#stopScriptButton.button Stop
 
         div#inputText
         textarea#outputText(style='display:none;')

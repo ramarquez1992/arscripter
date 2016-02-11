@@ -28,11 +28,12 @@
     <main>
       <div id="script">
         <div class="controls">
-          <input id="scriptFileChooser" type="file"><a id="saveScriptButton" href="#" download="script.wajs" class="button">save</a>
-          <button id="runScriptButton" class="button">run</button>
-          <button id="stopScriptButton" class="button">stop</button>
-          <button id="inputButton" class="button">in</button>
-          <button id="outputButton" class="button">out</button>
+          <input id="scriptFileChooser" type="file">
+          <label id="openScriptButton" for="scriptFileChooser" class="button">Open</label><a id="saveScriptButton" href="#" download="script.wajs" class="button">Save</a>
+          <button id="inputButton" class="button">Input</button>
+          <button id="outputButton" class="button">Output</button>
+          <button id="runScriptButton" class="button">Run</button>
+          <button id="stopScriptButton" class="button">Stop</button>
         </div>
         <div id="inputText"></div>
         <textarea id="outputText" style="display:none;"></textarea>

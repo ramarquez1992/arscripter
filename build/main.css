@@ -19,7 +19,8 @@ button, textarea {
   -ms-user-select: none;
   user-select: none;
   text-decoration: none;
-  font-size: 1em; }
+  font-size: 1em;
+  text-transform: lowercase; }
 
 input:disabled {
   opacity: 0.5; }
@@ -55,14 +56,14 @@ header {
   width: 50%;
   overflow: scroll;
   background-color: #ccc;
+  border-left: 1px solid #444;
   color: #000; }
   #pins .pinSet {
-    clear: both;
-    margin-bottom: 1em; }
+    clear: both; }
   #pins .pin {
     position: relative;
     height: 2em;
-    border-bottom: 1px solid #444; }
+    border-bottom: 1px dotted #444; }
     #pins .pin h3 {
       display: inline;
       background-color: #000;
@@ -105,7 +106,7 @@ header {
     height: 5%;
     background-color: #777; }
     #script .controls .button {
-      float: right;
+      float: left;
       margin-top: 0.8em;
       margin-right: 0.5em;
       border: 1px solid #444;
@@ -113,13 +114,22 @@ header {
       color: #444;
       font-size: 0.7em;
       padding: 0.1em 0.8em; }
+    #script .controls #scriptFileChooser {
+      display: none; }
+    #script .controls #openScriptButton {
+      margin-left: 1em; }
+    #script .controls #saveScriptButton {
+      margin-right: 3em; }
+    #script .controls #outputButton {
+      margin-right: 3em; }
   #script #inputText, #script #outputText {
     width: 100%;
     height: 95%; }
   #script #inputText {
     background-color: #fdd; }
   #script #outputText {
-    background-color: #dfd; }
+    background-color: #dfd;
+    padding: 1em; }
 
 .CodeMirror {
   height: 100% !important; }
